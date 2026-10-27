@@ -1,0 +1,8 @@
+Field: phone
+Semantic Type: PHONE
+Rule: valid_phone
+Input: 12345678901
+Expected: accepted
+Actual: Input was accepted with no validation error as expected.
+Validation Detail: 
+Status: PASS

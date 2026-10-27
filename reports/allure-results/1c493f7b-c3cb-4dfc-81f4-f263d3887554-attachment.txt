@@ -1,0 +1,108 @@
+INFO     generic_form_automation:browser_manager.py:23 Starting Playwright with browser: chromium (headless=True)
+INFO     generic_form_automation:login_manager.py:29 Opening application base URL: http://127.0.0.1:8080/login.html
+INFO     generic_form_automation:login_manager.py:37 Login page detected.
+INFO     generic_form_automation:login_manager.py:46 Entering credentials into username: 'input[id*='username' i]' and password: '#password'
+INFO     generic_form_automation:login_manager.py:53 Submitting login via: '#login-btn'
+INFO     generic_form_automation:login_manager.py:67 Login verified successfully.
+INFO     generic_form_automation:navigator.py:29 Already at target form URL: http://127.0.0.1:8080/create_user.html
+INFO     generic_form_automation:form_detector.py:26 Found 1 <form> element(s) on page.
+INFO     generic_form_automation:form_executor.py:49 Beginning execution of 48 validation test cases...
+INFO     generic_form_automation:form_executor.py:56 [1/48] Testing 'password' | Rule: required_empty_check | Input: ''
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Please fill out this field.'
+INFO     generic_form_automation:form_executor.py:56 [2/48] Testing 'password' | Rule: min_length_minus_1 | Input: 'Aa1!aaaaaaa'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Password must be at least 12 characters long.'
+INFO     generic_form_automation:form_executor.py:56 [3/48] Testing 'password' | Rule: min_length_boundary | Input: 'IqZ364!OdCuZ'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Input was accepted with no validation error as expected.
+INFO     generic_form_automation:form_executor.py:56 [4/48] Testing 'password' | Rule: valid_length_password | Input: '@Cim6zEz6!3bS'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Input was accepted with no validation error as expected.
+INFO     generic_form_automation:form_executor.py:56 [5/48] Testing 'password' | Rule: missing_uppercase | Input: 'secret12345678@!'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Password must contain an uppercase letter.'
+INFO     generic_form_automation:form_executor.py:56 [6/48] Testing 'password' | Rule: missing_lowercase | Input: 'SECRET12345678@!'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Password must contain a lowercase letter.'
+INFO     generic_form_automation:form_executor.py:56 [7/48] Testing 'password' | Rule: missing_number | Input: 'SecretPassWord@!'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Password must contain a numeric digit.'
+INFO     generic_form_automation:form_executor.py:56 [8/48] Testing 'password' | Rule: missing_special_character | Input: 'SecretPass123456'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Password must contain a special character.'
+INFO     generic_form_automation:form_executor.py:56 [9/48] Testing 'password' | Rule: valid_password | Input: 'koH*KsY@B8xtlR'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Input was accepted with no validation error as expected.
+INFO     generic_form_automation:form_executor.py:56 [10/48] Testing 'confirm_password' | Rule: required_empty_check | Input: ''
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Please fill out this field.'
+INFO     generic_form_automation:form_executor.py:56 [11/48] Testing 'confirm_password' | Rule: mismatched_password | Input: 'koH*KsY@B8xtl'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Passwords do not match.'
+INFO     generic_form_automation:form_executor.py:56 [12/48] Testing 'confirm_password' | Rule: matching_password | Input: 'koH*KsY@B8xtlR'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Input was accepted with no validation error as expected.
+INFO     generic_form_automation:form_executor.py:56 [13/48] Testing 'username' | Rule: required_empty_check | Input: ''
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Please fill out this field.'
+INFO     generic_form_automation:form_executor.py:56 [14/48] Testing 'username' | Rule: min_length_minus_1 | Input: 'aa'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Please lengthen this text to 3 characters or more (you are currently using 2 characters).'
+INFO     generic_form_automation:form_executor.py:56 [15/48] Testing 'username' | Rule: min_length_boundary | Input: 'uuu'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Input was accepted with no validation error as expected.
+INFO     generic_form_automation:form_executor.py:56 [16/48] Testing 'username' | Rule: max_length_boundary | Input: 'uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Input was accepted with no validation error as expected.
+INFO     generic_form_automation:form_executor.py:56 [17/48] Testing 'username' | Rule: max_length_plus_1 | Input: 'uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Username must be between 3 and 50 characters.'
+INFO     generic_form_automation:form_executor.py:56 [18/48] Testing 'username' | Rule: spaces_in_username | Input: 'test user'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Username cannot contain spaces.'
+INFO     generic_form_automation:form_executor.py:56 [19/48] Testing 'username' | Rule: special_characters | Input: 'test@user!#'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Username contains invalid special characters.'
+INFO     generic_form_automation:form_executor.py:56 [20/48] Testing 'username' | Rule: valid_username | Input: 'valid_user123'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Input was accepted with no validation error as expected.
+INFO     generic_form_automation:form_executor.py:56 [21/48] Testing 'full_name' | Rule: required_empty_check | Input: ''
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Please fill out this field.'
+INFO     generic_form_automation:form_executor.py:56 [22/48] Testing 'full_name' | Rule: min_length_minus_1 | Input: 'a'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Please lengthen this text to 2 characters or more (you are currently using 1 character).'
+INFO     generic_form_automation:form_executor.py:56 [23/48] Testing 'full_name' | Rule: min_length_boundary | Input: 'Jo'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Input was accepted with no validation error as expected.
+INFO     generic_form_automation:form_executor.py:56 [24/48] Testing 'full_name' | Rule: max_length_plus_1 | Input: 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Full name must be between 2 and 100 characters.'
+INFO     generic_form_automation:form_executor.py:56 [25/48] Testing 'full_name' | Rule: numbers_in_name | Input: 'John Doe 123'
+INFO     generic_form_automation:form_executor.py:62    -> Result: OBSERVATION | Application accepted input without validation error.
+INFO     generic_form_automation:form_executor.py:56 [26/48] Testing 'full_name' | Rule: special_characters_in_name | Input: 'John <Doe> #1!'
+INFO     generic_form_automation:form_executor.py:62    -> Result: OBSERVATION | Application accepted input without validation error.
+INFO     generic_form_automation:form_executor.py:56 [27/48] Testing 'full_name' | Rule: valid_full_name | Input: 'Jane Doe'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Input was accepted with no validation error as expected.
+INFO     generic_form_automation:form_executor.py:56 [28/48] Testing 'email' | Rule: required_empty_check | Input: ''
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Please fill out this field.'
+INFO     generic_form_automation:form_executor.py:56 [29/48] Testing 'email' | Rule: invalid_format_plain_text | Input: 'plainaddress'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Please include an '@' in the email address. 'plainaddress' is missing an '@'.'
+INFO     generic_form_automation:form_executor.py:56 [30/48] Testing 'email' | Rule: missing_at_symbol | Input: 'user.example.com'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Please include an '@' in the email address. 'user.example.com' is missing an '@'.'
+INFO     generic_form_automation:form_executor.py:56 [31/48] Testing 'email' | Rule: missing_domain | Input: 'user@'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Please enter a part following '@'. 'user@' is incomplete.'
+INFO     generic_form_automation:form_executor.py:56 [32/48] Testing 'email' | Rule: missing_username | Input: '@example.com'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Please enter a part followed by '@'. '@example.com' is incomplete.'
+INFO     generic_form_automation:form_executor.py:56 [33/48] Testing 'email' | Rule: spaces_in_email | Input: 'user name@example.com'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'A part followed by '@' should not contain the symbol ' '.'
+INFO     generic_form_automation:form_executor.py:56 [34/48] Testing 'email' | Rule: valid_email | Input: 'test.user@example.com'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Input was accepted with no validation error as expected.
+INFO     generic_form_automation:form_executor.py:56 [35/48] Testing 'phone' | Rule: alphabetic_phone | Input: 'abcdefghij'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Phone must be numeric digits only.'
+INFO     generic_form_automation:form_executor.py:56 [36/48] Testing 'phone' | Rule: disallowed_special_symbols | Input: '1234#$@!5678'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Phone must be numeric digits only.'
+INFO     generic_form_automation:form_executor.py:56 [37/48] Testing 'phone' | Rule: too_short_phone | Input: '111111111'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Phone number must be between 10 and 15 digits.'
+INFO     generic_form_automation:form_executor.py:56 [38/48] Testing 'phone' | Rule: too_long_phone | Input: '9999999999999999'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Phone number must be between 10 and 15 digits.'
+INFO     generic_form_automation:form_executor.py:56 [39/48] Testing 'phone' | Rule: valid_phone | Input: '12345678901'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Input was accepted with no validation error as expected.
+INFO     generic_form_automation:form_executor.py:56 [40/48] Testing 'role' | Rule: select_first_valid_option | Input: 'admin'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Input was accepted with no validation error as expected.
+INFO     generic_form_automation:form_executor.py:56 [41/48] Testing 'role' | Rule: select_last_valid_option | Input: 'viewer'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Input was accepted with no validation error as expected.
+INFO     generic_form_automation:form_executor.py:56 [42/48] Testing 'role' | Rule: select_middle_valid_option | Input: 'operator'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Input was accepted with no validation error as expected.
+INFO     generic_form_automation:form_executor.py:56 [43/48] Testing 'age' | Rule: alphabetic_value_in_number | Input: 'abc'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Browser native HTML5 number control strictly rejects alphabetic characters.'
+INFO     generic_form_automation:form_executor.py:56 [44/48] Testing 'age' | Rule: disallowed_decimal | Input: '19.5'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Please enter a valid value. The two nearest valid values are 19 and 20.'
+INFO     generic_form_automation:form_executor.py:56 [45/48] Testing 'age' | Rule: disallowed_negative_number | Input: '-5'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Value must be greater than or equal to 18.'
+INFO     generic_form_automation:form_executor.py:56 [46/48] Testing 'age' | Rule: below_min_boundary | Input: '17'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Value must be greater than or equal to 18.'
+INFO     generic_form_automation:form_executor.py:56 [47/48] Testing 'age' | Rule: above_max_boundary | Input: '100'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Validation triggered as expected: 'Value must be less than or equal to 99.'
+INFO     generic_form_automation:form_executor.py:56 [48/48] Testing 'age' | Rule: valid_number_within_bounds | Input: '58'
+INFO     generic_form_automation:form_executor.py:62    -> Result: PASS | Input was accepted with no validation error as expected.
+INFO     generic_form_automation:report_manager.py:81 JSON summary generated at: reports\summary.json
+INFO     generic_form_automation:report_manager.py:196 HTML summary generated at: reports\summary.html
+INFO     generic_form_automation:browser_manager.py:69 Browser stopped and Playwright session closed.

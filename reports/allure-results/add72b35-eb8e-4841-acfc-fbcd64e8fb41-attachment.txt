@@ -1,0 +1,8 @@
+Field: username
+Semantic Type: USERNAME
+Rule: min_length_minus_1
+Input: aa
+Expected: validation_triggered
+Actual: Validation triggered as expected: 'Please lengthen this text to 3 characters or more (you are currently using 2 characters).'
+Validation Detail: Please lengthen this text to 3 characters or more (you are currently using 2 characters).
+Status: PASS

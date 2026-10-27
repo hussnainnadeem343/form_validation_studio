@@ -1,0 +1,8 @@
+Field: age
+Semantic Type: NUMBER
+Rule: disallowed_decimal
+Input: 19.5
+Expected: validation_triggered
+Actual: Validation triggered as expected: 'Please enter a valid value. The two nearest valid values are 19 and 20.'
+Validation Detail: Please enter a valid value. The two nearest valid values are 19 and 20.
+Status: PASS

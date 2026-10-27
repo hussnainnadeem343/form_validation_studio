@@ -1,0 +1,8 @@
+Field: full_name
+Semantic Type: FULL_NAME
+Rule: required_empty_check
+Input: 
+Expected: validation_triggered
+Actual: Validation triggered as expected: 'Please fill out this field.'
+Validation Detail: Please fill out this field.
+Status: PASS

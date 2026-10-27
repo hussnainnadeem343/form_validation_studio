@@ -1,0 +1,8 @@
+Field: email
+Semantic Type: EMAIL
+Rule: spaces_in_email
+Input: user name@example.com
+Expected: validation_triggered
+Actual: Validation triggered as expected: 'A part followed by '@' should not contain the symbol ' '.'
+Validation Detail: A part followed by '@' should not contain the symbol ' '.
+Status: PASS

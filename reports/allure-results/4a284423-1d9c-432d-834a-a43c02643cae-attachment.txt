@@ -1,0 +1,8 @@
+Field: email
+Semantic Type: EMAIL
+Rule: invalid_format_plain_text
+Input: plainaddress
+Expected: validation_triggered
+Actual: Validation triggered as expected: 'Please include an '@' in the email address. 'plainaddress' is missing an '@'.'
+Validation Detail: Please include an '@' in the email address. 'plainaddress' is missing an '@'.
+Status: PASS

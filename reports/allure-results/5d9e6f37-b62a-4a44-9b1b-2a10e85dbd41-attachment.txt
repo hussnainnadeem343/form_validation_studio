@@ -1,0 +1,8 @@
+Field: password
+Semantic Type: PASSWORD
+Rule: missing_number
+Input: SecretPassWord@!
+Expected: validation_triggered
+Actual: Validation triggered as expected: 'Password must contain a numeric digit.'
+Validation Detail: Password must contain a numeric digit.
+Status: PASS

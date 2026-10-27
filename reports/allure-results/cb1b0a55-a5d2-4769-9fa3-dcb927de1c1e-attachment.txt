@@ -1,0 +1,8 @@
+Field: password
+Semantic Type: PASSWORD
+Rule: min_length_boundary
+Input: IqZ364!OdCuZ
+Expected: accepted
+Actual: Input was accepted with no validation error as expected.
+Validation Detail: 
+Status: PASS

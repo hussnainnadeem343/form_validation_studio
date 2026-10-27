@@ -1,0 +1,8 @@
+Field: username
+Semantic Type: USERNAME
+Rule: spaces_in_username
+Input: test user
+Expected: validation_triggered
+Actual: Validation triggered as expected: 'Username cannot contain spaces.'
+Validation Detail: Username cannot contain spaces.
+Status: PASS

@@ -1,0 +1,8 @@
+Field: password
+Semantic Type: PASSWORD
+Rule: min_length_minus_1
+Input: Aa1!aaaaaaa
+Expected: validation_triggered
+Actual: Validation triggered as expected: 'Password must be at least 12 characters long.'
+Validation Detail: Password must be at least 12 characters long.
+Status: PASS

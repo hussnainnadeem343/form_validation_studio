@@ -1,0 +1,8 @@
+Field: password
+Semantic Type: PASSWORD
+Rule: required_empty_check
+Input: 
+Expected: validation_triggered
+Actual: Validation triggered as expected: 'Please fill out this field.'
+Validation Detail: Please fill out this field.
+Status: PASS

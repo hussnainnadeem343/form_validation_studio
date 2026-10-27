@@ -1,0 +1,8 @@
+Field: email
+Semantic Type: EMAIL
+Rule: missing_at_symbol
+Input: user.example.com
+Expected: validation_triggered
+Actual: Validation triggered as expected: 'Please include an '@' in the email address. 'user.example.com' is missing an '@'.'
+Validation Detail: Please include an '@' in the email address. 'user.example.com' is missing an '@'.
+Status: PASS

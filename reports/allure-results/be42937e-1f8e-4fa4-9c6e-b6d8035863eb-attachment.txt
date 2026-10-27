@@ -1,0 +1,8 @@
+Field: full_name
+Semantic Type: FULL_NAME
+Rule: min_length_minus_1
+Input: a
+Expected: validation_triggered
+Actual: Validation triggered as expected: 'Please lengthen this text to 2 characters or more (you are currently using 1 character).'
+Validation Detail: Please lengthen this text to 2 characters or more (you are currently using 1 character).
+Status: PASS

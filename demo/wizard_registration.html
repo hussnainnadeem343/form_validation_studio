@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citizen Multi-Step Registration Portal — Demo</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary: #64748b;
+            --secondary-hover: #475569;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --border: #cbd5e1;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 32px 16px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .portal-card {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 680px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border);
+            padding: 32px;
+        }
+
+        .portal-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .portal-header h2 {
+            margin: 0 0 6px 0;
+            font-size: 22px;
+            color: var(--text-dark);
+        }
+
+        .portal-header p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Stepper Navigation */
+        .stepper {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 32px;
+        }
+
+        .stepper::before {
+            content: '';
+            position: absolute;
+            top: 18px;
+            left: 20px;
+            right: 20px;
+            height: 3px;
+            background: #e2e8f0;
+            z-index: 1;
+        }
+
+        .step-item {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 0 8px;
+        }
+
+        .step-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 6px;
+            transition: all 0.25s ease;
+        }
+
+        .step-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .step-item.active .step-circle {
+            background: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+        }
+
+        .step-item.active .step-label {
+            color: var(--primary);
+        }
+
+        .step-item.completed .step-circle {
+            background: var(--success);
+            color: #ffffff;
+        }
+
+        /* Form Controls */
+        .step-panel {
+            display: none;
+        }
+
+        .step-panel.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #334155;
+        }
+
+        label .required-star {
+            color: var(--danger);
+            margin-left: 2px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 10px 14px;
+            font-size: 14px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: #ffffff;
+            color: var(--text-dark);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .is-invalid {
+            border-color: var(--danger) !important;
+            background-color: #fffbfa;
+        }
+
+        .invalid-feedback {
+            display: none;
+            color: var(--danger);
+            font-size: 12px;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+
+        .hint {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Action Buttons */
+        .step-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .step-actions.right-only {
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 10px 22px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: #ffffff;
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary-hover);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: #ffffff;
+        }
+
+        .btn-success:hover {
+            background: #15803d;
+        }
+
+        /* Review Summary Box */
+        .review-card {
+            background: #f1f5f9;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .review-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #cbd5e1;
+            font-size: 13px;
+        }
+
+        .review-row:last-child {
+            border-bottom: none;
+        }
+
+        .review-label {
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .review-value {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        #success-banner {
+            display: none;
+            background: #dcfce7;
+            border: 1px solid #86efac;
+            color: #166534;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="portal-card">
+        <div class="portal-header">
+            <h2>Citizen Multi-Step Registration Portal</h2>
+            <p>Complete the steps below to create and verify your account</p>
+        </div>
+
+        <div id="success-banner">
+            🎉 Registration Complete! Your account has been registered successfully.
+        </div>
+
+        <!-- Stepper Indicators -->
+        <div class="stepper">
+            <div class="step-item active" id="stepper-item-1">
+                <div class="step-circle">1</div>
+                <div class="step-label">Basic Details</div>
+            </div>
+            <div class="step-item" id="stepper-item-2">
+                <div class="step-circle">2</div>
+                <div class="step-label">Contact Info</div>
+            </div>
+            <div class="step-item" id="stepper-item-3">
+                <div class="step-circle">3</div>
+                <div class="step-label">Review & Submit</div>
+            </div>
+        </div>
+
+        <!-- Multi-Step Form Container -->
+        <form id="wizard-form" novalidate onsubmit="event.preventDefault()">
+
+            <!-- STEP 1: Basic Details -->
+            <div class="step-panel active" id="step1">
+                <div class="form-group">
+                    <label for="category">Registration Category <span class="required-star">*</span></label>
+                    <select id="category" name="category" required>
+                        <option value="">-- Select Category --</option>
+                        <option value="individual">Individual Citizen</option>
+                        <option value="business">Corporate / Business</option>
+                        <option value="government">Government Official</option>
+                    </select>
+                    <div class="invalid-feedback" id="category-feedback">Please select a valid registration category.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="cnic">CNIC / Citizen ID <span class="required-star">*</span></label>
+                    <input type="text" id="cnic" name="cnic" placeholder="e.g. 35201-1234567-1 or 3520112345671" required maxlength="15" />
+                    <div class="hint">13-digit Pakistani National Identity Card number</div>
+                    <div class="invalid-feedback" id="cnic-feedback">Valid 13-digit CNIC is required (e.g. 35201-1234567-1).</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="cnic_expiry">CNIC Expiry Date <span class="required-star">*</span></label>
+                    <input type="text" id="cnic_expiry" name="cnic_expiry" class="datepicker" placeholder="YYYY-MM-DD" required />
+                    <div class="hint">Expiration date of CNIC (must be a valid future date)</div>
+                    <div class="invalid-feedback" id="cnic_expiry-feedback">Valid future expiration date required (YYYY-MM-DD).</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password <span class="required-star">*</span></label>
+                    <input type="password" id="password" name="password" placeholder="At least 12 chars with upper, lower, number" required />
+                    <div class="hint">Must contain at least 12 characters, uppercase, lowercase, and a number</div>
+                    <div class="invalid-feedback" id="password-feedback">Password must be at least 12 characters and contain upper, lower, and digit.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm_password">Confirm Password <span class="required-star">*</span></label>
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Repeat your password" required />
+                    <div class="invalid-feedback" id="confirm_password-feedback">Passwords do not match.</div>
+                </div>
+
+                <div class="step-actions right-only">
+                    <button type="button" id="nextBtn" class="btn btn-primary">Next Step &rarr;</button>
+                </div>
+            </div>
+
+            <!-- STEP 2: Contact Info -->
+            <div class="step-panel" id="step2">
+                <div class="form-group">
+                    <label for="recovery_email">Recovery Email <span class="required-star">*</span></label>
+                    <input type="email" id="recovery_email" name="recovery_email" placeholder="citizen@example.com" required />
+                    <div class="invalid-feedback" id="recovery_email-feedback">Please enter a valid email address.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number <span class="required-star">*</span></label>
+                    <input type="text" id="phone" name="phone" placeholder="03001234567" required />
+                    <div class="hint">Standard 10 to 15 digit mobile phone number</div>
+                    <div class="invalid-feedback" id="phone-feedback">Please enter a valid phone number (10-15 digits).</div>
+                </div>
+
+                <div class="step-actions">
+                    <button type="button" id="prevBtn" class="btn btn-secondary">&larr; Previous</button>
+                    <button type="button" id="nextBtn2" class="btn btn-primary">Next Step &rarr;</button>
+                </div>
+            </div>
+
+            <!-- STEP 3: Review & Submit -->
+            <div class="step-panel" id="step3">
+                <div class="review-card">
+                    <div class="review-row">
+                        <span class="review-label">Category:</span>
+                        <span class="review-value" id="rev-category">-</span>
+                    </div>
+                    <div class="review-row">
+                        <span class="review-label">CNIC:</span>
+                        <span class="review-value" id="rev-cnic">-</span>
+                    </div>
+                    <div class="review-row">
+                        <span class="review-label">Recovery Email:</span>
+                        <span class="review-value" id="rev-email">-</span>
+                    </div>
+                    <div class="review-row">
+                        <span class="review-label">Phone:</span>
+                        <span class="review-value" id="rev-phone">-</span>
+                    </div>
+                </div>
+
+                <div class="step-actions">
+                    <button type="button" id="prevBtn2" class="btn btn-secondary">&larr; Previous</button>
+                    <button type="submit" id="submitBtn" class="btn btn-success">Complete Registration ✓</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <script>
+        // DOM Elements
+        const step1 = document.getElementById("step1");
+        const step2 = document.getElementById("step2");
+        const step3 = document.getElementById("step3");
+
+        const stepper1 = document.getElementById("stepper-item-1");
+        const stepper2 = document.getElementById("stepper-item-2");
+        const stepper3 = document.getElementById("stepper-item-3");
+
+        const catEl = document.getElementById("category");
+        const cnicEl = document.getElementById("cnic");
+        const expiryEl = document.getElementById("cnic_expiry");
+        const passEl = document.getElementById("password");
+        const cpEl = document.getElementById("confirm_password");
+        const emailEl = document.getElementById("recovery_email");
+        const phoneEl = document.getElementById("phone");
+
+        function setFieldState(el, isValid, msg = "") {
+            const fb = document.getElementById(el.id + "-feedback");
+            if (!isValid) {
+                el.classList.add("is-invalid");
+                el.setAttribute("aria-invalid", "true");
+                if (fb) {
+                    if (msg) fb.innerText = msg;
+                    fb.style.display = "block";
+                }
+            } else {
+                el.classList.remove("is-invalid");
+                el.removeAttribute("aria-invalid");
+                if (fb) fb.style.display = "none";
+            }
+            return isValid;
+        }
+
+        // Field Validation Logic
+        function validateCategory() {
+            const val = catEl.value.trim();
+            if (!val) return setFieldState(catEl, false, "Please select a registration category.");
+            return setFieldState(catEl, true);
+        }
+
+        function validateCNIC() {
+            const val = cnicEl.value.trim();
+            if (!val) return setFieldState(cnicEl, false, "CNIC is required.");
+            const digits = val.replace(/\D/g, "");
+            if (digits.length !== 13) return setFieldState(cnicEl, false, "CNIC must contain exactly 13 digits.");
+            return setFieldState(cnicEl, true);
+        }
+
+        function validateExpiry() {
+            const val = expiryEl.value.trim();
+            if (!val) return setFieldState(expiryEl, false, "CNIC expiry date is required.");
+            const match = val.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+            if (!match) return setFieldState(expiryEl, false, "Please enter date in YYYY-MM-DD format.");
+            const y = parseInt(match[1], 10), m = parseInt(match[2], 10), d = parseInt(match[3], 10);
+            if (m < 1 || m > 12 || d < 1 || d > 31) return setFieldState(expiryEl, false, "Invalid calendar date.");
+            if (m === 2 && d > 29) return setFieldState(expiryEl, false, "Invalid calendar date (Feb has max 29 days).");
+            const expDate = new Date(y, m - 1, d);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            if (expDate <= today) return setFieldState(expiryEl, false, "CNIC has expired. Please provide a valid future expiration date.");
+            return setFieldState(expiryEl, true);
+        }
+
+        function validatePassword() {
+            const val = passEl.value;
+            if (!val) return setFieldState(passEl, false, "Password is required.");
+            if (val.length < 12) return setFieldState(passEl, false, "Password must be at least 12 characters long.");
+            if (!/[A-Z]/.test(val)) return setFieldState(passEl, false, "Password must contain an uppercase letter.");
+            if (!/[a-z]/.test(val)) return setFieldState(passEl, false, "Password must contain a lowercase letter.");
+            if (!/[0-9]/.test(val)) return setFieldState(passEl, false, "Password must contain a digit.");
+            if (!/[^a-zA-Z0-9]/.test(val)) return setFieldState(passEl, false, "Password must contain a special character.");
+            return setFieldState(passEl, true);
+        }
+
+        function validateConfirmPassword() {
+            const val = cpEl.value;
+            if (!val) return setFieldState(cpEl, false, "Please confirm your password.");
+            if (val !== passEl.value) return setFieldState(cpEl, false, "Passwords do not match.");
+            return setFieldState(cpEl, true);
+        }
+
+        function validateEmail() {
+            const val = emailEl.value.trim();
+            if (!val) return setFieldState(emailEl, false, "Recovery email is required.");
+            const emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+            if (!emailRegex.test(val)) return setFieldState(emailEl, false, "Please enter a valid email address.");
+            return setFieldState(emailEl, true);
+        }
+
+        function validatePhone() {
+            const val = phoneEl.value.trim();
+            if (!val) return setFieldState(phoneEl, false, "Phone number is required.");
+            const cleanDigits = val.replace(/\D/g, "");
+            if (cleanDigits.length < 10 || cleanDigits.length > 15) {
+                return setFieldState(phoneEl, false, "Phone number must be between 10 and 15 digits.");
+            }
+            return setFieldState(phoneEl, true);
+        }
+
+        // Realtime blur listeners
+        catEl.addEventListener("change", validateCategory);
+        catEl.addEventListener("blur", validateCategory);
+        cnicEl.addEventListener("blur", validateCNIC);
+        expiryEl.addEventListener("change", validateExpiry);
+        expiryEl.addEventListener("blur", validateExpiry);
+        passEl.addEventListener("blur", validatePassword);
+        cpEl.addEventListener("blur", validateConfirmPassword);
+        emailEl.addEventListener("blur", validateEmail);
+        phoneEl.addEventListener("blur", validatePhone);
+
+        // Step 1 -> Step 2 Navigation
+        document.getElementById("nextBtn").addEventListener("click", function() {
+            const cValid = validateCategory();
+            const cnValid = validateCNIC();
+            const exValid = validateExpiry();
+            const pValid = validatePassword();
+            const cpValid = validateConfirmPassword();
+
+            if (cValid && cnValid && exValid && pValid && cpValid) {
+                step1.classList.remove("active");
+                step2.classList.add("active");
+                stepper1.classList.remove("active");
+                stepper1.classList.add("completed");
+                stepper2.classList.add("active");
+            }
+        });
+
+        // Step 2 -> Step 1 Navigation
+        document.getElementById("prevBtn").addEventListener("click", function() {
+            step2.classList.remove("active");
+            step1.classList.add("active");
+            stepper2.classList.remove("active");
+            stepper1.classList.remove("completed");
+            stepper1.classList.add("active");
+        });
+
+        // Step 2 -> Step 3 Navigation
+        document.getElementById("nextBtn2").addEventListener("click", function() {
+            const eValid = validateEmail();
+            const phValid = validatePhone();
+
+            if (eValid && phValid) {
+                // Populate review
+                document.getElementById("rev-category").innerText = catEl.options[catEl.selectedIndex].text;
+                document.getElementById("rev-cnic").innerText = cnicEl.value;
+                document.getElementById("rev-email").innerText = emailEl.value;
+                document.getElementById("rev-phone").innerText = phoneEl.value;
+
+                step2.classList.remove("active");
+                step3.classList.add("active");
+                stepper2.classList.remove("active");
+                stepper2.classList.add("completed");
+                stepper3.classList.add("active");
+            }
+        });
+
+        // Step 3 -> Step 2 Navigation
+        document.getElementById("prevBtn2").addEventListener("click", function() {
+            step3.classList.remove("active");
+            step2.classList.add("active");
+            stepper3.classList.remove("active");
+            stepper2.classList.remove("completed");
+            stepper2.classList.add("active");
+        });
+
+        // Final Submission
+        document.getElementById("submitBtn").addEventListener("click", function(e) {
+            e.preventDefault();
+            document.getElementById("success-banner").style.display = "block";
+            stepper3.classList.remove("active");
+            stepper3.classList.add("completed");
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+Field: age
+Semantic Type: NUMBER
+Rule: alphabetic_value_in_number
+Input: abc
+Expected: validation_triggered
+Actual: Validation triggered as expected: 'Browser native HTML5 number control strictly rejects alphabetic characters.'
+Validation Detail: Browser native HTML5 number control strictly rejects alphabetic characters.
+Status: PASS

@@ -1,0 +1,8 @@
+Field: username
+Semantic Type: USERNAME
+Rule: max_length_plus_1
+Input: uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
+Expected: validation_triggered
+Actual: Validation triggered as expected: 'Username must be between 3 and 50 characters.'
+Validation Detail: Username must be between 3 and 50 characters.
+Status: PASS

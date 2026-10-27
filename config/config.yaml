@@ -1,0 +1,79 @@
+project:
+  name: "Generic Web Form Automation"
+
+application:
+  base_url: "https://hmis-beta.pitb.gov.pk/patient/visit"
+  target_url: "https://hmis-beta.pitb.gov.pk/patient/visit"
+
+login:
+  # Credentials fallback if env vars TEST_USERNAME / TEST_PASSWORD are not set
+  username: "admin"
+  password: "Admin@123456"
+
+  selectors:
+    username: ""
+    password: ""
+    submit: ""
+
+browser:
+  browser: "chromium"
+  headless: true
+  slow_mo: 0
+  timeout: 30000
+
+execution:
+  screenshot_on_failure: true
+  screenshot_on_observation: true
+  stop_on_failure: false
+  output_dir: "reports"
+  screenshots_dir: "screenshots"
+
+rules:
+  username:
+    required: true
+    min_length: 3
+    max_length: 50
+    allow_spaces: false
+    allow_special_chars: false
+
+  full_name:
+    required: true
+    min_length: 2
+    max_length: 100
+
+  email:
+    required: true
+
+  password:
+    required: true
+    min_length: 12
+    uppercase: true
+    lowercase: true
+    number: true
+    special_character: true
+
+  confirm_password:
+    required: true
+
+  phone:
+    required: false
+    min_length: 10
+    max_length: 15
+    numeric_only: true
+
+  number:
+    required: false
+    min: 18
+    max: 99
+    allow_decimal: false
+    allow_negative: false
+
+  dropdown:
+    required: false
+
+  text:
+    required: false
+    min_length: 1
+    max_length: 255
+
+field_overrides: {}

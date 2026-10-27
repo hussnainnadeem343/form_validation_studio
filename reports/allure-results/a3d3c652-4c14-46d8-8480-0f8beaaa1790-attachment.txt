@@ -1,0 +1,8 @@
+Field: age
+Semantic Type: NUMBER
+Rule: disallowed_negative_number
+Input: -5
+Expected: validation_triggered
+Actual: Validation triggered as expected: 'Value must be greater than or equal to 18.'
+Validation Detail: Value must be greater than or equal to 18.
+Status: PASS

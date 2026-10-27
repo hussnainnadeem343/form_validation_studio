@@ -1,0 +1,8 @@
+Field: full_name
+Semantic Type: FULL_NAME
+Rule: min_length_boundary
+Input: Jo
+Expected: accepted
+Actual: Input was accepted with no validation error as expected.
+Validation Detail: 
+Status: PASS

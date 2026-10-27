@@ -1,0 +1,110 @@
+Demo server started at http://127.0.0.1:8080 serving 'C:\Users\SQA\Documents\antigravity\kind-euclid\demo'
+2026-10-01 14:50:34 INFO  Starting Playwright with browser: chromium (headless=True)
+2026-10-01 14:50:35 INFO  Opening application base URL: http://127.0.0.1:8080/login.html
+2026-10-01 14:50:35 INFO  Login page detected.
+2026-10-01 14:50:35 INFO  Entering credentials into username: 'input[id*='username' i]' and password: '#password'
+2026-10-01 14:50:35 INFO  Submitting login via: '#login-btn'
+2026-10-01 14:50:36 INFO  Login verified successfully.
+2026-10-01 14:50:36 INFO  Already at target form URL: http://127.0.0.1:8080/create_user.html
+2026-10-01 14:50:36 INFO  Found 1 <form> element(s) on page.
+2026-10-01 14:50:36 INFO  Beginning execution of 48 validation test cases...
+2026-10-01 14:50:36 INFO  [1/48] Testing 'password' | Rule: required_empty_check | Input: ''
+2026-10-01 14:50:37 INFO     -> Result: PASS | Validation triggered as expected: 'Please fill out this field.'
+2026-10-01 14:50:37 INFO  [2/48] Testing 'password' | Rule: min_length_minus_1 | Input: 'Aa1!aaaaaaa'
+2026-10-01 14:50:39 INFO     -> Result: PASS | Validation triggered as expected: 'Password must be at least 12 characters long.'
+2026-10-01 14:50:39 INFO  [3/48] Testing 'password' | Rule: min_length_boundary | Input: 'IqZ364!OdCuZ'
+2026-10-01 14:50:40 INFO     -> Result: PASS | Input was accepted with no validation error as expected.
+2026-10-01 14:50:40 INFO  [4/48] Testing 'password' | Rule: valid_length_password | Input: '@Cim6zEz6!3bS'
+2026-10-01 14:50:42 INFO     -> Result: PASS | Input was accepted with no validation error as expected.
+2026-10-01 14:50:42 INFO  [5/48] Testing 'password' | Rule: missing_uppercase | Input: 'secret12345678@!'
+2026-10-01 14:50:43 INFO     -> Result: PASS | Validation triggered as expected: 'Password must contain an uppercase letter.'
+2026-10-01 14:50:43 INFO  [6/48] Testing 'password' | Rule: missing_lowercase | Input: 'SECRET12345678@!'
+2026-10-01 14:50:44 INFO     -> Result: PASS | Validation triggered as expected: 'Password must contain a lowercase letter.'
+2026-10-01 14:50:44 INFO  [7/48] Testing 'password' | Rule: missing_number | Input: 'SecretPassWord@!'
+2026-10-01 14:50:45 INFO     -> Result: PASS | Validation triggered as expected: 'Password must contain a numeric digit.'
+2026-10-01 14:50:45 INFO  [8/48] Testing 'password' | Rule: missing_special_character | Input: 'SecretPass123456'
+2026-10-01 14:50:47 INFO     -> Result: PASS | Validation triggered as expected: 'Password must contain a special character.'
+2026-10-01 14:50:47 INFO  [9/48] Testing 'password' | Rule: valid_password | Input: 'koH*KsY@B8xtlR'
+2026-10-01 14:50:48 INFO     -> Result: PASS | Input was accepted with no validation error as expected.
+2026-10-01 14:50:48 INFO  [10/48] Testing 'confirm_password' | Rule: required_empty_check | Input: ''
+2026-10-01 14:50:49 INFO     -> Result: PASS | Validation triggered as expected: 'Please fill out this field.'
+2026-10-01 14:50:49 INFO  [11/48] Testing 'confirm_password' | Rule: mismatched_password | Input: 'koH*KsY@B8xtl'
+2026-10-01 14:50:51 INFO     -> Result: PASS | Validation triggered as expected: 'Passwords do not match.'
+2026-10-01 14:50:51 INFO  [12/48] Testing 'confirm_password' | Rule: matching_password | Input: 'koH*KsY@B8xtlR'
+2026-10-01 14:50:52 INFO     -> Result: PASS | Input was accepted with no validation error as expected.
+2026-10-01 14:50:52 INFO  [13/48] Testing 'username' | Rule: required_empty_check | Input: ''
+2026-10-01 14:50:53 INFO     -> Result: PASS | Validation triggered as expected: 'Please fill out this field.'
+2026-10-01 14:50:53 INFO  [14/48] Testing 'username' | Rule: min_length_minus_1 | Input: 'aa'
+2026-10-01 14:50:55 INFO     -> Result: PASS | Validation triggered as expected: 'Please lengthen this text to 3 characters or more (you are currently using 2 characters).'
+2026-10-01 14:50:55 INFO  [15/48] Testing 'username' | Rule: min_length_boundary | Input: 'uuu'
+2026-10-01 14:50:56 INFO     -> Result: PASS | Input was accepted with no validation error as expected.
+2026-10-01 14:50:56 INFO  [16/48] Testing 'username' | Rule: max_length_boundary | Input: 'uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu'
+2026-10-01 14:50:57 INFO     -> Result: PASS | Input was accepted with no validation error as expected.
+2026-10-01 14:50:57 INFO  [17/48] Testing 'username' | Rule: max_length_plus_1 | Input: 'uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu'
+2026-10-01 14:50:59 INFO     -> Result: PASS | Validation triggered as expected: 'Username must be between 3 and 50 characters.'
+2026-10-01 14:50:59 INFO  [18/48] Testing 'username' | Rule: spaces_in_username | Input: 'test user'
+2026-10-01 14:51:00 INFO     -> Result: PASS | Validation triggered as expected: 'Username cannot contain spaces.'
+2026-10-01 14:51:00 INFO  [19/48] Testing 'username' | Rule: special_characters | Input: 'test@user!#'
+2026-10-01 14:51:01 INFO     -> Result: PASS | Validation triggered as expected: 'Username contains invalid special characters.'
+2026-10-01 14:51:01 INFO  [20/48] Testing 'username' | Rule: valid_username | Input: 'valid_user123'
+2026-10-01 14:51:03 INFO     -> Result: PASS | Input was accepted with no validation error as expected.
+2026-10-01 14:51:03 INFO  [21/48] Testing 'full_name' | Rule: required_empty_check | Input: ''
+2026-10-01 14:51:04 INFO     -> Result: PASS | Validation triggered as expected: 'Please fill out this field.'
+2026-10-01 14:51:04 INFO  [22/48] Testing 'full_name' | Rule: min_length_minus_1 | Input: 'a'
+2026-10-01 14:51:05 INFO     -> Result: PASS | Validation triggered as expected: 'Please lengthen this text to 2 characters or more (you are currently using 1 character).'
+2026-10-01 14:51:05 INFO  [23/48] Testing 'full_name' | Rule: min_length_boundary | Input: 'Jo'
+2026-10-01 14:51:07 INFO     -> Result: PASS | Input was accepted with no validation error as expected.
+2026-10-01 14:51:07 INFO  [24/48] Testing 'full_name' | Rule: max_length_plus_1 | Input: 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+2026-10-01 14:51:08 INFO     -> Result: PASS | Validation triggered as expected: 'Full name must be between 2 and 100 characters.'
+2026-10-01 14:51:08 INFO  [25/48] Testing 'full_name' | Rule: numbers_in_name | Input: 'John Doe 123'
+2026-10-01 14:51:10 INFO     -> Result: OBSERVATION | Application accepted input without validation error.
+2026-10-01 14:51:10 INFO  [26/48] Testing 'full_name' | Rule: special_characters_in_name | Input: 'John <Doe> #1!'
+2026-10-01 14:51:11 INFO     -> Result: OBSERVATION | Application accepted input without validation error.
+2026-10-01 14:51:11 INFO  [27/48] Testing 'full_name' | Rule: valid_full_name | Input: 'Jane Doe'
+2026-10-01 14:51:12 INFO     -> Result: PASS | Input was accepted with no validation error as expected.
+2026-10-01 14:51:12 INFO  [28/48] Testing 'email' | Rule: required_empty_check | Input: ''
+2026-10-01 14:51:14 INFO     -> Result: PASS | Validation triggered as expected: 'Please fill out this field.'
+2026-10-01 14:51:14 INFO  [29/48] Testing 'email' | Rule: invalid_format_plain_text | Input: 'plainaddress'
+2026-10-01 14:51:15 INFO     -> Result: PASS | Validation triggered as expected: 'Please include an '@' in the email address. 'plainaddress' is missing an '@'.'
+2026-10-01 14:51:15 INFO  [30/48] Testing 'email' | Rule: missing_at_symbol | Input: 'user.example.com'
+2026-10-01 14:51:16 INFO     -> Result: PASS | Validation triggered as expected: 'Please include an '@' in the email address. 'user.example.com' is missing an '@'.'
+2026-10-01 14:51:16 INFO  [31/48] Testing 'email' | Rule: missing_domain | Input: 'user@'
+2026-10-01 14:51:17 INFO     -> Result: PASS | Validation triggered as expected: 'Please enter a part following '@'. 'user@' is incomplete.'
+2026-10-01 14:51:17 INFO  [32/48] Testing 'email' | Rule: missing_username | Input: '@example.com'
+2026-10-01 14:51:19 INFO     -> Result: PASS | Validation triggered as expected: 'Please enter a part followed by '@'. '@example.com' is incomplete.'
+2026-10-01 14:51:19 INFO  [33/48] Testing 'email' | Rule: spaces_in_email | Input: 'user name@example.com'
+2026-10-01 14:51:20 INFO     -> Result: PASS | Validation triggered as expected: 'A part followed by '@' should not contain the symbol ' '.'
+2026-10-01 14:51:20 INFO  [34/48] Testing 'email' | Rule: valid_email | Input: 'test.user@example.com'
+2026-10-01 14:51:21 INFO     -> Result: PASS | Input was accepted with no validation error as expected.
+2026-10-01 14:51:21 INFO  [35/48] Testing 'phone' | Rule: alphabetic_phone | Input: 'abcdefghij'
+2026-10-01 14:51:23 INFO     -> Result: PASS | Validation triggered as expected: 'Phone must be numeric digits only.'
+2026-10-01 14:51:23 INFO  [36/48] Testing 'phone' | Rule: disallowed_special_symbols | Input: '1234#$@!5678'
+2026-10-01 14:51:24 INFO     -> Result: PASS | Validation triggered as expected: 'Phone must be numeric digits only.'
+2026-10-01 14:51:24 INFO  [37/48] Testing 'phone' | Rule: too_short_phone | Input: '111111111'
+2026-10-01 14:51:25 INFO     -> Result: PASS | Validation triggered as expected: 'Phone number must be between 10 and 15 digits.'
+2026-10-01 14:51:25 INFO  [38/48] Testing 'phone' | Rule: too_long_phone | Input: '9999999999999999'
+2026-10-01 14:51:27 INFO     -> Result: PASS | Validation triggered as expected: 'Phone number must be between 10 and 15 digits.'
+2026-10-01 14:51:27 INFO  [39/48] Testing 'phone' | Rule: valid_phone | Input: '12345678901'
+2026-10-01 14:51:28 INFO     -> Result: PASS | Input was accepted with no validation error as expected.
+2026-10-01 14:51:28 INFO  [40/48] Testing 'role' | Rule: select_first_valid_option | Input: 'admin'
+2026-10-01 14:51:29 INFO     -> Result: PASS | Input was accepted with no validation error as expected.
+2026-10-01 14:51:29 INFO  [41/48] Testing 'role' | Rule: select_last_valid_option | Input: 'viewer'
+2026-10-01 14:51:31 INFO     -> Result: PASS | Input was accepted with no validation error as expected.
+2026-10-01 14:51:31 INFO  [42/48] Testing 'role' | Rule: select_middle_valid_option | Input: 'operator'
+2026-10-01 14:51:32 INFO     -> Result: PASS | Input was accepted with no validation error as expected.
+2026-10-01 14:51:32 INFO  [43/48] Testing 'age' | Rule: alphabetic_value_in_number | Input: 'abc'
+2026-10-01 14:51:33 INFO     -> Result: PASS | Validation triggered as expected: 'Browser native HTML5 number control strictly rejects alphabetic characters.'
+2026-10-01 14:51:33 INFO  [44/48] Testing 'age' | Rule: disallowed_decimal | Input: '19.5'
+2026-10-01 14:51:35 INFO     -> Result: PASS | Validation triggered as expected: 'Please enter a valid value. The two nearest valid values are 19 and 20.'
+2026-10-01 14:51:35 INFO  [45/48] Testing 'age' | Rule: disallowed_negative_number | Input: '-5'
+2026-10-01 14:51:36 INFO     -> Result: PASS | Validation triggered as expected: 'Value must be greater than or equal to 18.'
+2026-10-01 14:51:36 INFO  [46/48] Testing 'age' | Rule: below_min_boundary | Input: '17'
+2026-10-01 14:51:37 INFO     -> Result: PASS | Validation triggered as expected: 'Value must be greater than or equal to 18.'
+2026-10-01 14:51:37 INFO  [47/48] Testing 'age' | Rule: above_max_boundary | Input: '100'
+2026-10-01 14:51:39 INFO     -> Result: PASS | Validation triggered as expected: 'Value must be less than or equal to 99.'
+2026-10-01 14:51:39 INFO  [48/48] Testing 'age' | Rule: valid_number_within_bounds | Input: '58'
+2026-10-01 14:51:40 INFO     -> Result: PASS | Input was accepted with no validation error as expected.
+2026-10-01 14:51:40 INFO  JSON summary generated at: reports\summary.json
+2026-10-01 14:51:40 INFO  HTML summary generated at: reports\summary.html
+2026-10-01 14:51:40 INFO  Browser stopped and Playwright session closed.
+Demo server stopped.

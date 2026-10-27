@@ -1,0 +1,8 @@
+Field: password
+Semantic Type: PASSWORD
+Rule: valid_password
+Input: koH*KsY@B8xtlR
+Expected: accepted
+Actual: Input was accepted with no validation error as expected.
+Validation Detail: 
+Status: PASS

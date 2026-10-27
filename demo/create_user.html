@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Portal - Create User</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background: #f8fafc; padding: 40px 20px; color: #1e293b; }
+        .container { max-width: 640px; margin: 0 auto; background: #ffffff; padding: 32px; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+        h1 { font-size: 24px; margin-bottom: 6px; }
+        p.desc { color: #64748b; font-size: 14px; margin-bottom: 24px; }
+        .form-row { display: flex; gap: 16px; }
+        .form-group { flex: 1; margin-bottom: 18px; }
+        label { display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px; }
+        .required-star { color: #ef4444; }
+        input[type="text"], input[type="email"], input[type="password"], input[type="tel"], input[type="number"], select {
+            width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; transition: border-color 0.15s ease-in-out;
+        }
+        input:focus, select:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
+        .is-invalid { border-color: #ef4444 !important; background-color: #fef2f2; }
+        .invalid-feedback { color: #dc2626; font-size: 12px; margin-top: 4px; display: none; }
+        .is-invalid + .invalid-feedback, .is-invalid ~ .invalid-feedback { display: block; }
+        .btn-submit { background: #2563eb; color: #ffffff; border: none; padding: 12px 20px; font-size: 15px; font-weight: 600; border-radius: 6px; cursor: pointer; width: 100%; margin-top: 8px; }
+        .btn-submit:hover { background: #1d4ed8; }
+        .alert-success { background: #dcfce7; border: 1px solid #86efac; color: #166534; padding: 12px; border-radius: 6px; margin-bottom: 18px; display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Create New User</h1>
+        <p class="desc">Complete the form below to register a new user in the system.</p>
+
+        <div id="success-banner" class="alert-success">User created successfully!</div>
+
+        <form id="create-user-form" novalidate>
+            <!-- Username -->
+            <div class="form-group">
+                <label for="username">Username <span class="required-star">*</span></label>
+                <input type="text" id="username" name="username" placeholder="Choose a username" required minlength="3" maxlength="50" />
+                <div class="invalid-feedback" id="username-feedback">Username must be between 3 and 50 characters without spaces or special characters.</div>
+            </div>
+
+            <!-- Full Name -->
+            <div class="form-group">
+                <label for="full_name">Full Name <span class="required-star">*</span></label>
+                <input type="text" id="full_name" name="full_name" placeholder="First and last name" required minlength="2" maxlength="100" />
+                <div class="invalid-feedback" id="full_name-feedback">Full name must be between 2 and 100 characters.</div>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">Email Address <span class="required-star">*</span></label>
+                <input type="email" id="email" name="email" placeholder="user@example.com" required />
+                <div class="invalid-feedback" id="email-feedback">Please enter a valid email address.</div>
+            </div>
+
+            <!-- Password & Confirm Password -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="password">Password <span class="required-star">*</span></label>
+                    <input type="password" id="password" name="password" placeholder="Min 12 characters" required />
+                    <div class="invalid-feedback" id="password-feedback">Password must be at least 12 characters and include uppercase, lowercase, number, and special character.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm_password">Confirm Password <span class="required-star">*</span></label>
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Repeat password" required />
+                    <div class="invalid-feedback" id="confirm_password-feedback">Passwords do not match.</div>
+                </div>
+            </div>
+
+            <!-- Phone & Role -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="10-15 digits" />
+                    <div class="invalid-feedback" id="phone-feedback">Phone must be numeric with 10 to 15 digits.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="role">User Role</label>
+                    <select id="role" name="role">
+                        <option value="">Select a role...</option>
+                        <option value="admin">Administrator</option>
+                        <option value="manager">Manager</option>
+                        <option value="operator">Operator</option>
+                        <option value="viewer">Viewer</option>
+                    </select>
+                    <div class="invalid-feedback" id="role-feedback">Please select a valid role.</div>
+                </div>
+            </div>
+
+            <!-- Age (Number) -->
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input type="number" id="age" name="age" min="18" max="99" placeholder="18 - 99" />
+                <div class="invalid-feedback" id="age-feedback">Age must be an integer between 18 and 99.</div>
+            </div>
+
+            <button type="submit" id="submit-user-btn" class="btn-submit">Create User</button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById("create-user-form");
+
+        function setValidation(inputEl, isValid, message) {
+            const feedbackEl = document.getElementById(inputEl.id + "-feedback");
+            if (!isValid) {
+                inputEl.classList.add("is-invalid");
+                inputEl.setAttribute("aria-invalid", "true");
+                if (feedbackEl) {
+                    if (message) feedbackEl.innerText = message;
+                    feedbackEl.style.display = "block";
+                }
+            } else {
+                inputEl.classList.remove("is-invalid");
+                inputEl.removeAttribute("aria-invalid");
+                if (feedbackEl) {
+                    feedbackEl.style.display = "none";
+                }
+            }
+            return isValid;
+        }
+
+        function validateUsername() {
+            const el = document.getElementById("username");
+            const val = el.value.trim();
+            if (!val) return setValidation(el, false, "Username is required.");
+            if (val.length < 3 || val.length > 50) return setValidation(el, false, "Username must be between 3 and 50 characters.");
+            if (/\s/.test(el.value)) return setValidation(el, false, "Username cannot contain spaces.");
+            if (/[^a-zA-Z0-9_]/.test(val)) return setValidation(el, false, "Username contains invalid special characters.");
+            return setValidation(el, true);
+        }
+
+        function validateFullName() {
+            const el = document.getElementById("full_name");
+            const val = el.value.trim();
+            if (!val) return setValidation(el, false, "Full name is required.");
+            if (val.length < 2 || val.length > 100) return setValidation(el, false, "Full name must be between 2 and 100 characters.");
+            return setValidation(el, true);
+        }
+
+        function validateEmail() {
+            const el = document.getElementById("email");
+            const val = el.value.trim();
+            if (!val) return setValidation(el, false, "Email is required.");
+            const emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+            if (!emailRegex.test(val)) return setValidation(el, false, "Please enter a valid email address.");
+            return setValidation(el, true);
+        }
+
+        function validatePassword() {
+            const el = document.getElementById("password");
+            const val = el.value;
+            if (!val) return setValidation(el, false, "Password is required.");
+            if (val.length < 12) return setValidation(el, false, "Password must be at least 12 characters long.");
+            if (!/[A-Z]/.test(val)) return setValidation(el, false, "Password must contain an uppercase letter.");
+            if (!/[a-z]/.test(val)) return setValidation(el, false, "Password must contain a lowercase letter.");
+            if (!/[0-9]/.test(val)) return setValidation(el, false, "Password must contain a numeric digit.");
+            if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(val)) return setValidation(el, false, "Password must contain a special character.");
+            return setValidation(el, true);
+        }
+
+        function validateConfirmPassword() {
+            const el = document.getElementById("confirm_password");
+            const pwdVal = document.getElementById("password").value;
+            const val = el.value;
+            if (!val) return setValidation(el, false, "Confirm password is required.");
+            if (val !== pwdVal) return setValidation(el, false, "Passwords do not match.");
+            return setValidation(el, true);
+        }
+
+        function validatePhone() {
+            const el = document.getElementById("phone");
+            const val = el.value.trim();
+            if (!val) return setValidation(el, true);
+            if (!/^\d+$/.test(val)) return setValidation(el, false, "Phone must be numeric digits only.");
+            if (val.length < 10 || val.length > 15) return setValidation(el, false, "Phone number must be between 10 and 15 digits.");
+            return setValidation(el, true);
+        }
+
+        function validateAge() {
+            const el = document.getElementById("age");
+            if (el.validity && el.validity.badInput) return setValidation(el, false, "Age must be a valid integer.");
+            const val = el.value.trim();
+            if (!val) return setValidation(el, true);
+            const num = Number(val);
+            if (isNaN(num) || !Number.isInteger(num)) return setValidation(el, false, "Age must be a valid integer.");
+            if (num < 18 || num > 99) return setValidation(el, false, "Age must be between 18 and 99.");
+            return setValidation(el, true);
+        }
+
+        document.getElementById("username").addEventListener("blur", validateUsername);
+        document.getElementById("full_name").addEventListener("blur", validateFullName);
+        document.getElementById("email").addEventListener("blur", validateEmail);
+        document.getElementById("password").addEventListener("blur", validatePassword);
+        document.getElementById("confirm_password").addEventListener("blur", validateConfirmPassword);
+        document.getElementById("phone").addEventListener("blur", validatePhone);
+        document.getElementById("age").addEventListener("blur", validateAge);
+
+        form.addEventListener("submit", function(e) {
+            e.preventDefault();
+            const uValid = validateUsername();
+            const nValid = validateFullName();
+            const eValid = validateEmail();
+            const pValid = validatePassword();
+            const cpValid = validateConfirmPassword();
+            const phValid = validatePhone();
+            const aValid = validateAge();
+
+            if (uValid && nValid && eValid && pValid && cpValid && phValid && aValid) {
+                document.getElementById("success-banner").style.display = "block";
+            } else {
+                document.getElementById("success-banner").style.display = "none";
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+Field: password
+Semantic Type: PASSWORD
+Rule: missing_uppercase
+Input: secret12345678@!
+Expected: validation_triggered
+Actual: Validation triggered as expected: 'Password must contain an uppercase letter.'
+Validation Detail: Password must contain an uppercase letter.
+Status: PASS

@@ -1,0 +1,8 @@
+Field: full_name
+Semantic Type: FULL_NAME
+Rule: max_length_plus_1
+Input: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Expected: validation_triggered
+Actual: Validation triggered as expected: 'Full name must be between 2 and 100 characters.'
+Validation Detail: Full name must be between 2 and 100 characters.
+Status: PASS

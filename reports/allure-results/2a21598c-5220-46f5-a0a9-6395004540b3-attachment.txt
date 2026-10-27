@@ -1,0 +1,8 @@
+Field: phone
+Semantic Type: PHONE
+Rule: too_long_phone
+Input: 9999999999999999
+Expected: validation_triggered
+Actual: Validation triggered as expected: 'Phone number must be between 10 and 15 digits.'
+Validation Detail: Phone number must be between 10 and 15 digits.
+Status: PASS

@@ -1,0 +1,8 @@
+Field: full_name
+Semantic Type: FULL_NAME
+Rule: special_characters_in_name
+Input: John <Doe> #1!
+Expected: observe
+Actual: Application accepted input without validation error.
+Validation Detail: 
+Status: OBSERVATION

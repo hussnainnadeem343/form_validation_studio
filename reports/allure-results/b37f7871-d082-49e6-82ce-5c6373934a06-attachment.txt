@@ -1,0 +1,8 @@
+Field: username
+Semantic Type: USERNAME
+Rule: valid_username
+Input: valid_user123
+Expected: accepted
+Actual: Input was accepted with no validation error as expected.
+Validation Detail: 
+Status: PASS

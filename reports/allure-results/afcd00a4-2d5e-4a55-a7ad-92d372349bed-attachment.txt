@@ -1,0 +1,8 @@
+Field: email
+Semantic Type: EMAIL
+Rule: missing_username
+Input: @example.com
+Expected: validation_triggered
+Actual: Validation triggered as expected: 'Please enter a part followed by '@'. '@example.com' is incomplete.'
+Validation Detail: Please enter a part followed by '@'. '@example.com' is incomplete.
+Status: PASS

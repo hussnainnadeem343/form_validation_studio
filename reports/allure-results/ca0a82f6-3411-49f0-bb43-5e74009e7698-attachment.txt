@@ -1,0 +1,8 @@
+Field: confirm_password
+Semantic Type: CONFIRM_PASSWORD
+Rule: matching_password
+Input: koH*KsY@B8xtlR
+Expected: accepted
+Actual: Input was accepted with no validation error as expected.
+Validation Detail: 
+Status: PASS

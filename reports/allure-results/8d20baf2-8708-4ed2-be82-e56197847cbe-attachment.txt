@@ -1,0 +1,8 @@
+Field: email
+Semantic Type: EMAIL
+Rule: valid_email
+Input: test.user@example.com
+Expected: accepted
+Actual: Input was accepted with no validation error as expected.
+Validation Detail: 
+Status: PASS

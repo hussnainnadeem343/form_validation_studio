@@ -1,0 +1,8 @@
+Field: password
+Semantic Type: PASSWORD
+Rule: missing_special_character
+Input: SecretPass123456
+Expected: validation_triggered
+Actual: Validation triggered as expected: 'Password must contain a special character.'
+Validation Detail: Password must contain a special character.
+Status: PASS

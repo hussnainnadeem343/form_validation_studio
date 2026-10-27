@@ -1,0 +1,8 @@
+Field: username
+Semantic Type: USERNAME
+Rule: min_length_boundary
+Input: uuu
+Expected: accepted
+Actual: Input was accepted with no validation error as expected.
+Validation Detail: 
+Status: PASS

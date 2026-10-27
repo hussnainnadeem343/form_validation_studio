@@ -1,0 +1,8 @@
+Field: username
+Semantic Type: USERNAME
+Rule: max_length_boundary
+Input: uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
+Expected: accepted
+Actual: Input was accepted with no validation error as expected.
+Validation Detail: 
+Status: PASS

@@ -1,0 +1,8 @@
+Field: phone
+Semantic Type: PHONE
+Rule: alphabetic_phone
+Input: abcdefghij
+Expected: validation_triggered
+Actual: Validation triggered as expected: 'Phone must be numeric digits only.'
+Validation Detail: Phone must be numeric digits only.
+Status: PASS

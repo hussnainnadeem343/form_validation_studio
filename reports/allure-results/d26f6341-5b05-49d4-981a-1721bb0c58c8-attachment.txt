@@ -1,0 +1,8 @@
+Field: age
+Semantic Type: NUMBER
+Rule: valid_number_within_bounds
+Input: 58
+Expected: accepted
+Actual: Input was accepted with no validation error as expected.
+Validation Detail: 
+Status: PASS

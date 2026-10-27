@@ -1,0 +1,8 @@
+Field: password
+Semantic Type: PASSWORD
+Rule: missing_lowercase
+Input: SECRET12345678@!
+Expected: validation_triggered
+Actual: Validation triggered as expected: 'Password must contain a lowercase letter.'
+Validation Detail: Password must contain a lowercase letter.
+Status: PASS

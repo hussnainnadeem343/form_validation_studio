@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo App - Validation Report</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 24px; background: #f8fafc; color: #1e293b; }
+        .header { margin-bottom: 24px; }
+        h1 { margin: 0 0 8px 0; font-size: 26px; }
+        .timestamp { color: #64748b; font-size: 14px; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .card { background: #fff; padding: 16px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid #94a3b8; }
+        .card.total { border-color: #3b82f6; }
+        .card.pass { border-color: #10b981; }
+        .card.fail { border-color: #ef4444; }
+        .card.obs { border-color: #f59e0b; }
+        .card.skip { border-color: #6b7280; }
+        .card-val { font-size: 28px; font-weight: bold; margin-top: 4px; }
+        .card-lbl { font-size: 13px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+        .table-wrap { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+        th, td { padding: 12px 16px; border-bottom: 1px solid #e2e8f0; }
+        th { background: #f1f5f9; font-weight: 600; color: #475569; }
+        tr:hover { background: #f8fafc; }
+        .badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+        .badge-pass { background: #d1fae5; color: #065f46; }
+        .badge-fail { background: #fee2e2; color: #991b1b; }
+        .badge-obs { background: #fef3c7; color: #92400e; }
+        .badge-skip { background: #f3f4f6; color: #374151; }
+        .screenshot-btn { font-size: 12px; color: #2563eb; text-decoration: none; padding: 3px 8px; border: 1px solid #bfdbfe; border-radius: 4px; background: #eff6ff; }
+        .screenshot-btn:hover { background: #dbeafe; }
+        .text-muted { color: #94a3b8; font-size: 12px; }
+        code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 13px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Demo App</h1>
+        <div class="timestamp">Generated on 2026-10-27 16:36:42</div>
+    </div>
+    <div class="metrics-grid">
+        <div class="card total"><div class="card-lbl">Total Tests</div><div class="card-val">48</div></div>
+        <div class="card pass"><div class="card-lbl">Passed</div><div class="card-val">45</div></div>
+        <div class="card fail"><div class="card-lbl">Failed</div><div class="card-val">1</div></div>
+        <div class="card obs"><div class="card-lbl">Observations</div><div class="card-val">2</div></div>
+        <div class="card skip"><div class="card-lbl">Skipped</div><div class="card-val">0</div></div>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Field</th>
+                    <th>Rule</th>
+                    <th>Test Input</th>
+                    <th>Status</th>
+                    <th>Actual Outcome</th>
+                    <th>Screenshot</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            <tr>
+                <td>1</td>
+                <td><strong>password</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">PASSWORD</span></td>
+                <td><code>required_empty_check</code></td>
+                <td><code></code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Please fill out this field.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>2</td>
+                <td><strong>password</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">PASSWORD</span></td>
+                <td><code>min_length_minus_1</code></td>
+                <td><code>Aa1!aaaaaaa</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Password must be at least 12 characters long.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>3</td>
+                <td><strong>password</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">PASSWORD</span></td>
+                <td><code>min_length_boundary</code></td>
+                <td><code>exWg2%5hMgEF</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Input was accepted with no validation error as expected.</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>4</td>
+                <td><strong>password</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">PASSWORD</span></td>
+                <td><code>valid_length_password</code></td>
+                <td><code>aoIjDE&amp;?%0qtJ</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Input was accepted with no validation error as expected.</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>5</td>
+                <td><strong>password</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">PASSWORD</span></td>
+                <td><code>missing_uppercase</code></td>
+                <td><code>secret12345678@!</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Password must contain an uppercase letter.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>6</td>
+                <td><strong>password</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">PASSWORD</span></td>
+                <td><code>missing_lowercase</code></td>
+                <td><code>SECRET12345678@!</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Password must contain a lowercase letter.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>7</td>
+                <td><strong>password</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">PASSWORD</span></td>
+                <td><code>missing_number</code></td>
+                <td><code>SecretPassWord@!</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Password must contain a numeric digit.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>8</td>
+                <td><strong>password</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">PASSWORD</span></td>
+                <td><code>missing_special_character</code></td>
+                <td><code>SecretPass123456</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Password must contain a special character.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>9</td>
+                <td><strong>password</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">PASSWORD</span></td>
+                <td><code>valid_password</code></td>
+                <td><code>Q&amp;EyvicsEqB0NL</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Input was accepted with no validation error as expected.</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>10</td>
+                <td><strong>confirm_password</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">CONFIRM_PASSWORD</span></td>
+                <td><code>required_empty_check</code></td>
+                <td><code></code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Please fill out this field.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>11</td>
+                <td><strong>confirm_password</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">CONFIRM_PASSWORD</span></td>
+                <td><code>mismatched_password</code></td>
+                <td><code>Q&amp;EyvicsEqB0N</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Passwords do not match.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>12</td>
+                <td><strong>confirm_password</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">CONFIRM_PASSWORD</span></td>
+                <td><code>matching_password</code></td>
+                <td><code>Q&amp;EyvicsEqB0NL</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Input was accepted with no validation error as expected.</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>13</td>
+                <td><strong>username</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">USERNAME</span></td>
+                <td><code>required_empty_check</code></td>
+                <td><code></code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Please fill out this field.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>14</td>
+                <td><strong>username</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">USERNAME</span></td>
+                <td><code>min_length_minus_1</code></td>
+                <td><code>aa</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Please lengthen this text to 3 characters or more (you are currently using 2 characters).&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>15</td>
+                <td><strong>username</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">USERNAME</span></td>
+                <td><code>min_length_boundary</code></td>
+                <td><code>uuu</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Input was accepted with no validation error as expected.</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>16</td>
+                <td><strong>username</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">USERNAME</span></td>
+                <td><code>max_length_boundary</code></td>
+                <td><code>uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Input was accepted with no validation error as expected.</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>17</td>
+                <td><strong>username</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">USERNAME</span></td>
+                <td><code>max_length_plus_1</code></td>
+                <td><code>uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Username must be between 3 and 50 characters.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>18</td>
+                <td><strong>username</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">USERNAME</span></td>
+                <td><code>spaces_in_username</code></td>
+                <td><code>test user</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Username cannot contain spaces.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>19</td>
+                <td><strong>username</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">USERNAME</span></td>
+                <td><code>special_characters</code></td>
+                <td><code>test@user!#</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Username contains invalid special characters.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>20</td>
+                <td><strong>username</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">USERNAME</span></td>
+                <td><code>valid_username</code></td>
+                <td><code>user_98678</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Input was accepted with no validation error as expected.</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>21</td>
+                <td><strong>full_name</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">FULL_NAME</span></td>
+                <td><code>required_empty_check</code></td>
+                <td><code></code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Please fill out this field.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>22</td>
+                <td><strong>full_name</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">FULL_NAME</span></td>
+                <td><code>min_length_minus_1</code></td>
+                <td><code>a</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Please lengthen this text to 2 characters or more (you are currently using 1 character).&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>23</td>
+                <td><strong>full_name</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">FULL_NAME</span></td>
+                <td><code>min_length_boundary</code></td>
+                <td><code>Jo</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Input was accepted with no validation error as expected.</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>24</td>
+                <td><strong>full_name</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">FULL_NAME</span></td>
+                <td><code>max_length_plus_1</code></td>
+                <td><code>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Full name must be between 2 and 100 characters.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>25</td>
+                <td><strong>full_name</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">FULL_NAME</span></td>
+                <td><code>numbers_in_name</code></td>
+                <td><code>John Doe 123</code></td>
+                <td><span class="badge badge-obs">OBSERVATION</span></td>
+                <td>Application accepted input without validation error.</td>
+                <td><a href='../screenshots/full_name_numbers_in_name_025.png' target='_blank' class='screenshot-btn'>View Screenshot</a></td>
+            </tr>
+            
+            <tr>
+                <td>26</td>
+                <td><strong>full_name</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">FULL_NAME</span></td>
+                <td><code>special_characters_in_name</code></td>
+                <td><code>John &lt;Doe&gt; #1!</code></td>
+                <td><span class="badge badge-obs">OBSERVATION</span></td>
+                <td>Application accepted input without validation error.</td>
+                <td><a href='../screenshots/full_name_special_characters_in_name_026.png' target='_blank' class='screenshot-btn'>View Screenshot</a></td>
+            </tr>
+            
+            <tr>
+                <td>27</td>
+                <td><strong>full_name</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">FULL_NAME</span></td>
+                <td><code>valid_full_name</code></td>
+                <td><code>Jane Doe</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Input was accepted with no validation error as expected.</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>28</td>
+                <td><strong>email</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">EMAIL</span></td>
+                <td><code>required_empty_check</code></td>
+                <td><code></code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Please fill out this field.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>29</td>
+                <td><strong>email</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">EMAIL</span></td>
+                <td><code>invalid_format_plain_text</code></td>
+                <td><code>plainaddress</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Please include an &#x27;@&#x27; in the email address. &#x27;plainaddress&#x27; is missing an &#x27;@&#x27;.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>30</td>
+                <td><strong>email</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">EMAIL</span></td>
+                <td><code>missing_at_symbol</code></td>
+                <td><code>user.example.com</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Please include an &#x27;@&#x27; in the email address. &#x27;user.example.com&#x27; is missing an &#x27;@&#x27;.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>31</td>
+                <td><strong>email</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">EMAIL</span></td>
+                <td><code>missing_domain</code></td>
+                <td><code>user@</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Please enter a part following &#x27;@&#x27;. &#x27;user@&#x27; is incomplete.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>32</td>
+                <td><strong>email</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">EMAIL</span></td>
+                <td><code>missing_username</code></td>
+                <td><code>@example.com</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Please enter a part followed by &#x27;@&#x27;. &#x27;@example.com&#x27; is incomplete.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>33</td>
+                <td><strong>email</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">EMAIL</span></td>
+                <td><code>spaces_in_email</code></td>
+                <td><code>user name@example.com</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;A part followed by &#x27;@&#x27; should not contain the symbol &#x27; &#x27;.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>34</td>
+                <td><strong>email</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">EMAIL</span></td>
+                <td><code>valid_email</code></td>
+                <td><code>qa_test_377636@example.com</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Input was accepted with no validation error as expected.</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>35</td>
+                <td><strong>phone</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">PHONE</span></td>
+                <td><code>alphabetic_phone</code></td>
+                <td><code>abcdefghij</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Phone must be numeric digits only.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>36</td>
+                <td><strong>phone</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">PHONE</span></td>
+                <td><code>disallowed_special_symbols</code></td>
+                <td><code>1234#$@!5678</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Phone must be numeric digits only.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>37</td>
+                <td><strong>phone</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">PHONE</span></td>
+                <td><code>too_short_phone</code></td>
+                <td><code>111111111</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Phone number must be between 10 and 15 digits.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>38</td>
+                <td><strong>phone</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">PHONE</span></td>
+                <td><code>too_long_phone</code></td>
+                <td><code>9999999999999999</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Phone number must be between 10 and 15 digits.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>39</td>
+                <td><strong>phone</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">PHONE</span></td>
+                <td><code>valid_phone</code></td>
+                <td><code>03006068209</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Input was accepted with no validation error as expected.</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>40</td>
+                <td><strong>role</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">DROPDOWN</span></td>
+                <td><code>select_first_valid_option</code></td>
+                <td><code>admin</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Input was accepted with no validation error as expected.</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>41</td>
+                <td><strong>role</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">DROPDOWN</span></td>
+                <td><code>select_last_valid_option</code></td>
+                <td><code>viewer</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Input was accepted with no validation error as expected.</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>42</td>
+                <td><strong>role</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">DROPDOWN</span></td>
+                <td><code>select_middle_valid_option</code></td>
+                <td><code>operator</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Input was accepted with no validation error as expected.</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>43</td>
+                <td><strong>age</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">NUMBER</span></td>
+                <td><code>alphabetic_value_in_number</code></td>
+                <td><code>abc</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Browser native HTML5 number control strictly rejects alphabetic characters.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>44</td>
+                <td><strong>age</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">NUMBER</span></td>
+                <td><code>disallowed_decimal</code></td>
+                <td><code>1.5</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Value must be greater than or equal to 18.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>45</td>
+                <td><strong>age</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">NUMBER</span></td>
+                <td><code>disallowed_negative_number</code></td>
+                <td><code>-5</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Value must be greater than or equal to 18.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>46</td>
+                <td><strong>age</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">NUMBER</span></td>
+                <td><code>below_min_boundary</code></td>
+                <td><code>-1</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Value must be greater than or equal to 18.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>47</td>
+                <td><strong>age</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">NUMBER</span></td>
+                <td><code>above_max_boundary</code></td>
+                <td><code>1000000</code></td>
+                <td><span class="badge badge-pass">PASS</span></td>
+                <td>Validation triggered as expected: &#x27;Value must be less than or equal to 99.&#x27;</td>
+                <td></td>
+            </tr>
+            
+            <tr>
+                <td>48</td>
+                <td><strong>age</strong> <span class='badge' style='background:#e0e7ff; color:#3730a3; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;'>Step 1</span><br><span class="text-muted">NUMBER</span></td>
+                <td><code>valid_number_within_bounds</code></td>
+                <td><code>499999</code></td>
+                <td><span class="badge badge-fail">FAIL</span></td>
+                <td>Expected input to be accepted, but validation error triggered: &#x27;Value must be less than or equal to 99.&#x27;</td>
+                <td><a href='../screenshots/age_valid_number_within_bounds_048.png' target='_blank' class='screenshot-btn'>View Screenshot</a></td>
+            </tr>
+            
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

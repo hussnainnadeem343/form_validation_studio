@@ -1,0 +1,8 @@
+Field: role
+Semantic Type: DROPDOWN
+Rule: select_first_valid_option
+Input: admin
+Expected: accepted
+Actual: Input was accepted with no validation error as expected.
+Validation Detail: 
+Status: PASS

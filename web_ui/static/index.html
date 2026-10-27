@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA Form Validation Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --pass: #10b981;
+            --fail: #ef4444;
+            --obs: #f59e0b;
+            --skip: #94a3b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, sans-serif; }
+        html, body { height: 100%; overflow: hidden; }
+        body { background: var(--bg); color: var(--text-main); display: flex; flex-direction: column; }
+
+        header {
+            background: var(--surface); border-bottom: 1px solid var(--border);
+            padding: 10px 24px; display: flex; align-items: center; justify-content: space-between;
+            flex-shrink: 0; height: 56px;
+        }
+        .brand { display: flex; align-items: center; gap: 12px; }
+        .logo { background: var(--primary); color: #fff; font-weight: 700; width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .title h1 { font-size: 16px; font-weight: 700; line-height: 1.2; }
+        .live-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); font-weight: 500; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #94a3b8; transition: background 0.2s; }
+        .status-dot.running { background: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.2); animation: pulse 1.5s infinite; }
+        .status-dot.completed { background: #10b981; }
+        @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.15); } 100% { opacity: 1; transform: scale(1); } }
+
+        .container {
+            max-width: 100%; width: 100%; margin: 0; padding: 14px 20px;
+            display: grid; grid-template-columns: 370px minmax(0, 1fr); gap: 16px;
+            flex: 1; min-height: 0; overflow: hidden;
+        }
+
+        /* Left Config Panel */
+        .card {
+            background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+            padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            display: flex; flex-direction: column; overflow-y: auto; max-height: 100%;
+        }
+        .card-header { margin-bottom: 12px; }
+        .card-title { font-size: 15px; font-weight: 600; }
+        .card-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+        .form-group { margin-bottom: 11px; }
+        label { display: block; font-size: 12px; font-weight: 600; color: #334155; margin-bottom: 4px; }
+        input[type="text"], input[type="password"], input[type="number"], select {
+            width: 100%; padding: 7px 11px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; background: #fff; transition: all 0.2s;
+        }
+        input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
+
+        .presets-label { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+        .preset-pills { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+        .preset-pill {
+            background: #f1f5f9; border: 1px solid var(--border); padding: 7px 10px; border-radius: 6px;
+            font-size: 11px; font-weight: 500; cursor: pointer; text-align: left; transition: all 0.15s;
+        }
+        .preset-pill:hover { background: #e2e8f0; border-color: #cbd5e1; }
+        .preset-pill.active { background: #eff6ff; border-color: #bfdbfe; color: var(--primary); font-weight: 600; }
+
+        .toggle-group { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-top: 1px solid var(--border); }
+        .toggle-label { font-size: 12px; font-weight: 500; }
+        .toggle-sub { font-size: 11px; color: var(--text-muted); }
+
+        .btn-run {
+            width: 100%; background: var(--primary); color: #fff; border: none; padding: 11px; border-radius: 7px;
+            font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+            margin-top: 12px; transition: background 0.15s; flex-shrink: 0;
+        }
+        .btn-run:hover { background: var(--primary-hover); }
+        .btn-run:disabled { background: #94a3b8; cursor: not-allowed; }
+
+        /* Right Results Panel */
+        .right-panel { display: flex; flex-direction: column; gap: 12px; min-height: 0; overflow: hidden; }
+
+        .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; flex-shrink: 0; }
+        .metric-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; position: relative; }
+        .metric-val { font-size: 22px; font-weight: 700; line-height: 1.1; }
+        .metric-lbl { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+        .metric-card.total { border-left: 4px solid var(--primary); }
+        .metric-card.pass { border-left: 4px solid var(--pass); }
+        .metric-card.fail { border-left: 4px solid var(--fail); }
+        .metric-card.obs { border-left: 4px solid var(--obs); }
+
+        .progress-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; display: none; flex-shrink: 0; }
+        .progress-bar-bg { width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; margin-top: 6px; }
+        .progress-bar-fill { height: 100%; width: 0%; background: var(--primary); transition: width 0.2s ease-in-out; }
+        .status-text { font-size: 12px; color: var(--text-muted); display: flex; justify-content: space-between; font-weight: 500; }
+
+        .table-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; flex: 1; min-height: 0; display: flex; flex-direction: column; }
+        .table-toolbar { padding: 9px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+        .filter-tabs { display: flex; gap: 5px; }
+        .tab-btn { background: transparent; border: 1px solid transparent; padding: 5px 10px; border-radius: 5px; font-size: 12px; font-weight: 500; cursor: pointer; }
+        .tab-btn.active { background: #f1f5f9; border-color: var(--border); color: var(--primary); font-weight: 600; }
+
+        .table-wrap { overflow-y: auto; overflow-x: hidden; flex: 1; min-height: 0; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: left; table-layout: fixed; }
+        th { background: #f8fafc; padding: 9px 12px; font-weight: 600; color: #475569; position: sticky; top: 0; border-bottom: 1px solid var(--border); z-index: 10; white-space: nowrap; }
+        td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; word-break: break-word; }
+        tr:hover { background: #fbfcfe; }
+
+        .badge { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; white-space: nowrap; }
+        .badge-pass { background: #d1fae5; color: #065f46; }
+        .badge-fail { background: #fee2e2; color: #991b1b; }
+        .badge-obs { background: #fef3c7; color: #92400e; }
+        .badge-skip { background: #f1f5f9; color: #475569; }
+
+        .btn-view-shot { background: #eff6ff; color: var(--primary); border: 1px solid #bfdbfe; padding: 2px 7px; border-radius: 4px; font-size: 11px; cursor: pointer; text-decoration: none; white-space: nowrap; }
+        .btn-view-shot:hover { background: #dbeafe; }
+
+        /* Custom Slim Scrollbars */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Modal Lightbox */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; }
+        .modal-content { background: #fff; border-radius: 12px; max-width: 90%; max-height: 90%; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .modal-img { max-width: 100%; max-height: 75vh; object-fit: contain; border: 1px solid var(--border); border-radius: 6px; }
+        .btn-close { align-self: flex-end; background: #f1f5f9; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+
+        code { font-family: 'JetBrains Mono', monospace; font-size: 11px; background: #f1f5f9; padding: 2px 5px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand">
+            <div class="logo">QA</div>
+            <div class="title">
+                <h1>Form Validation Studio</h1>
+                <div class="live-tag">
+                    <span id="header-status-dot" class="status-dot"></span>
+                    <span id="header-status-text">Ready to test</span>
+                </div>
+            </div>
+        </div>
+        <div id="report-actions" style="display: none;">
+            <a id="btn-open-report" href="#" target="_blank" style="background:#10b981; color:#fff; padding:6px 13px; border-radius:6px; font-size:12px; text-decoration:none; font-weight:600; display:inline-flex; align-items:center; gap:6px;">
+                <span>📊</span> Open Full HTML Report
+            </a>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Configuration Panel -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Test Any Web Form</div>
+                <div class="card-desc">Paste your target page URL or pick a quick preset below.</div>
+            </div>
+
+            <div class="presets-label">Quick Presets (1-Click Fill)</div>
+            <div class="preset-pills">
+                <button class="preset-pill" onclick="loadPreset('https://hmis-beta.pitb.gov.pk/patient/visit', true, 'https://hmis-beta.pitb.gov.pk/login', '', '', 'PITB Testing Hospital 2', 'HMIS')">
+                    🏥 HMIS — Patient Registration (PITB)
+                </button>
+                <button class="preset-pill" onclick="loadPreset('http://127.0.0.1:8080/create_user.html', true, 'http://127.0.0.1:8080/login.html', 'admin', 'Admin@123456', '', 'Demo App')">
+                    🧪 Single-Step Demo Form
+                </button>
+                <!-- <button class="preset-pill" onclick="loadPreset('http://127.0.0.1:8080/wizard_registration.html', false, '', '', '', '', 'Multi-Step Wizard')">
+                    🧙‍♂️ Multi-Step Wizard (3 Steps)
+                </button>
+                
+                <button class="preset-pill" onclick="loadPreset('https://dev-auction-citizen.pitb.gov.pk/register', false, '', '', '', '', 'Citizen Auction')">
+                    🏛️ Citizen Auction Portal
+                </button> -->
+            </div>
+
+            <form id="test-form" onsubmit="startValidation(event)">
+                <div class="form-group">
+                    <label for="target-url">Target Form URL *</label>
+                    <input type="text" id="target-url" placeholder="https://example.com/register" required value="" />
+                </div>
+
+                <div class="toggle-group">
+                    <div>
+                        <div class="toggle-label">Watch in Browser (Headed Mode)</div>
+                        <div class="toggle-sub">Shows browser window live during test execution</div>
+                    </div>
+                    <input type="checkbox" id="headed-mode" checked />
+                </div>
+
+                <div class="toggle-group">
+                    <div>
+                        <div class="toggle-label">Requires Login First?</div>
+                        <div class="toggle-sub">If authenticated session is needed to access form</div>
+                    </div>
+                    <input type="checkbox" id="login-toggle" onchange="toggleLoginSection()" />
+                </div>
+
+                <div id="login-section" style="display: none; background: #f8fafc; padding: 14px; border-radius: 8px; margin-top: 10px; border: 1px solid var(--border);">
+                    <div class="form-group">
+                        <label for="base-url">Login URL</label>
+                        <input type="text" id="base-url" placeholder="https://example.com/login" value="" />
+                    </div>
+                    <div class="form-group" id="hospital-group">
+                        <label for="hospital-name">
+                            Hospital Selection <span id="hospital-badge" style="background:#dbeafe; color:#1e40af; font-size:11px; padding:2px 6px; border-radius:4px; margin-left:6px; font-weight:600;">Mandatory for HMIS</span>
+                        </label>
+                        <input type="text" id="hospital-name" placeholder="e.g. PITB Testing Hospital 2" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" placeholder="Username / Email" />
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Password" />
+                    </div>
+                    <div class="form-group">
+                        <label for="login-wait">Wait After Entering Credentials (seconds)</label>
+                        <input type="number" id="login-wait" min="0" max="60" value="10" placeholder="10" />
+                    </div>
+                </div>
+
+                <button type="submit" id="btn-submit" class="btn-run">
+                    <span id="btn-text">▶ Run Validation Tests</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Right Results Panel -->
+        <div class="right-panel">
+            <div class="metrics-grid">
+                <div class="metric-card total">
+                    <div class="metric-val" id="count-total">0</div>
+                    <div class="metric-lbl">Total Tests</div>
+                </div>
+                <div class="metric-card pass">
+                    <div class="metric-val" id="count-pass" style="color: var(--pass);">0</div>
+                    <div class="metric-lbl">Passed</div>
+                </div>
+                <div class="metric-card fail">
+                    <div class="metric-val" id="count-fail" style="color: var(--fail);">0</div>
+                    <div class="metric-lbl">Failed</div>
+                </div>
+                <div class="metric-card obs">
+                    <div class="metric-val" id="count-obs" style="color: var(--obs);">0</div>
+                    <div class="metric-lbl">Observations</div>
+                </div>
+            </div>
+
+            <div id="progress-box" class="progress-box">
+                <div class="status-text">
+                    <span id="current-task-text">Running validation tests...</span>
+                    <span id="progress-percent">0%</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div id="progress-bar" class="progress-bar-fill"></div>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="table-toolbar">
+                    <div class="filter-tabs">
+                        <button class="tab-btn active" onclick="filterResults('ALL')">All</button>
+                        <button class="tab-btn" onclick="filterResults('PASS')">Passed</button>
+                        <button class="tab-btn" onclick="filterResults('FAIL')">Failed</button>
+                        <button class="tab-btn" onclick="filterResults('OBSERVATION')">Observations</button>
+                    </div>
+                    <div id="active-count" style="font-size: 13px; color: var(--text-muted);">0 results</div>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 38px;">#</th>
+                                <th style="width: 82px;">Status</th>
+                                <th style="width: 140px;">Field</th>
+                                <th style="width: 155px;">Rule Evaluated</th>
+                                <th style="width: 130px;">Input Tested</th>
+                                <th>Observed Validation Behavior</th>
+                                <th style="width: 72px; text-align: center;">Evidence</th>
+                            </tr>
+                        </thead>
+                        <tbody id="results-tbody">
+                            <tr>
+                                <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 48px;">
+                                    Paste a URL on the left and click <strong>Run Validation Tests</strong> to start.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screenshot Lightbox Modal -->
+    <div id="img-modal" class="modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h3 id="modal-title" style="font-size: 15px;">Screenshot Preview</h3>
+            <img id="modal-img" class="modal-img" src="" alt="Screenshot" />
+            <button class="btn-close" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        let allResults = [];
+        let currentFilter = 'ALL';
+        let eventSource = null;
+
+        let selectedProject = '';
+
+        function loadPreset(url, hasLogin, loginUrl = '', user = '', pass = '', hospital = '', projectName = '', waitSeconds = 10) {
+            document.getElementById('target-url').value = url;
+            document.getElementById('login-toggle').checked = hasLogin;
+            toggleLoginSection();
+            if (hasLogin) {
+                document.getElementById('base-url').value = loginUrl;
+                document.getElementById('username').value = user;
+                document.getElementById('password').value = pass;
+            }
+            if (hospital) {
+                document.getElementById('hospital-name').value = hospital;
+            }
+            const waitEl = document.getElementById('login-wait');
+            if (waitEl) {
+                waitEl.value = waitSeconds;
+            }
+            selectedProject = projectName || (url.includes('hmis') ? 'HMIS' : '');
+
+            document.querySelectorAll('.preset-pill').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('onclick').includes(url));
+            });
+        }
+
+        function toggleLoginSection() {
+            const hasLogin = document.getElementById('login-toggle').checked;
+            document.getElementById('login-section').style.display = hasLogin ? 'block' : 'none';
+        }
+
+        function setupEventStream() {
+            if (eventSource) eventSource.close();
+            eventSource = new EventSource('/api/stream');
+
+            eventSource.onmessage = function(e) {
+                try {
+                    const data = JSON.parse(e.data);
+                    handleStreamEvent(data);
+                } catch(err) {}
+            };
+        }
+
+        function updateHeaderStatus(state, text) {
+            const dot = document.getElementById('header-status-dot');
+            const txt = document.getElementById('header-status-text');
+            if (dot) dot.className = 'status-dot ' + (state || 'idle');
+            if (txt) txt.innerText = text;
+        }
+
+        function handleStreamEvent(data) {
+            if (data.type === 'suite_started') {
+                document.getElementById('count-total').innerText = data.total;
+                document.getElementById('progress-box').style.display = 'block';
+                updateHeaderStatus('running', `Running validation suite (${data.total} tests)...`);
+                updateProgress(0, data.total);
+            } else if (data.type === 'test_started') {
+                const label = `[${data.index}/${data.total}] Testing ${data.field} • ${data.rule}`;
+                document.getElementById('current-task-text').innerText = label;
+                updateHeaderStatus('running', label);
+                updateProgress(data.index, data.total);
+            } else if (data.type === 'test_completed') {
+                allResults.push(data);
+                renderResults();
+                updateCounts();
+                const wrap = document.querySelector('.table-wrap');
+                if (wrap) wrap.scrollTop = wrap.scrollHeight;
+            } else if (data.type === 'run_completed') {
+                updateProgress(data.total, data.total);
+                document.getElementById('current-task-text').innerText = 'Validation Completed!';
+                updateHeaderStatus('completed', `Validation Completed (${data.total} tests executed)`);
+                document.getElementById('btn-submit').disabled = false;
+                document.getElementById('btn-text').innerText = '▶ Run Validation Tests';
+                if (data.html_report) {
+                    document.getElementById('report-actions').style.display = 'block';
+                    document.getElementById('btn-open-report').href = data.html_report;
+                }
+            } else if (data.type === 'error') {
+                alert('Error: ' + data.message);
+                updateHeaderStatus('idle', 'Run failed: ' + data.message);
+                document.getElementById('btn-submit').disabled = false;
+                document.getElementById('btn-text').innerText = '▶ Run Validation Tests';
+            }
+        }
+
+        function updateProgress(current, total) {
+            const pct = total > 0 ? Math.round((current / total) * 100) : 0;
+            document.getElementById('progress-percent').innerText = pct + '%';
+            document.getElementById('progress-bar').style.width = pct + '%';
+        }
+
+        function updateCounts() {
+            let pass = 0, fail = 0, obs = 0;
+            allResults.forEach(r => {
+                if (r.status === 'PASS') pass++;
+                else if (r.status === 'FAIL') fail++;
+                else if (r.status === 'OBSERVATION') obs++;
+            });
+            document.getElementById('count-pass').innerText = pass;
+            document.getElementById('count-fail').innerText = fail;
+            document.getElementById('count-obs').innerText = obs;
+        }
+
+        async function startValidation(e) {
+            e.preventDefault();
+            allResults = [];
+            renderResults();
+
+            document.getElementById('btn-submit').disabled = true;
+            document.getElementById('btn-text').innerText = '⏳ Testing in progress...';
+            document.getElementById('progress-box').style.display = 'block';
+            document.getElementById('report-actions').style.display = 'none';
+            updateHeaderStatus('running', 'Initiating test run...');
+
+            setupEventStream();
+
+            const hospEl = document.getElementById('hospital-name');
+            const waitEl = document.getElementById('login-wait');
+            const targetUrlVal = document.getElementById('target-url').value.trim();
+
+            const payload = {
+                target_url: targetUrlVal,
+                has_login: document.getElementById('login-toggle').checked,
+                base_url: document.getElementById('base-url').value.trim(),
+                username: document.getElementById('username').value.trim(),
+                password: document.getElementById('password').value,
+                hospital: hospEl ? hospEl.value.trim() : '',
+                project_name: selectedProject || (targetUrlVal.includes('hmis') ? 'HMIS' : ''),
+                login_wait_seconds: waitEl ? parseInt(waitEl.value || 10, 10) : 10,
+                headed: document.getElementById('headed-mode').checked,
+                slow_mo: 40
+            };
+
+            try {
+                const res = await fetch('/api/run', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok) {
+                    const err = await res.json();
+                    alert(err.error || 'Failed to start run');
+                    updateHeaderStatus('idle', 'Failed to start');
+                    document.getElementById('btn-submit').disabled = false;
+                    document.getElementById('btn-text').innerText = '▶ Run Validation Tests';
+                }
+            } catch(err) {
+                alert('Network error: ' + err.message);
+                updateHeaderStatus('idle', 'Network error');
+                document.getElementById('btn-submit').disabled = false;
+                document.getElementById('btn-text').innerText = '▶ Run Validation Tests';
+            }
+        }
+
+        function filterResults(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.innerText.toUpperCase() === filter || (filter === 'ALL' && btn.innerText === 'All'));
+            });
+            renderResults();
+        }
+
+        function renderResults() {
+            const tbody = document.getElementById('results-tbody');
+            const filtered = allResults.filter(r => currentFilter === 'ALL' || r.status === currentFilter);
+            document.getElementById('active-count').innerText = `${filtered.length} of ${allResults.length} tests`;
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:var(--text-muted); padding:32px;">No tests matching filter.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map((r, i) => {
+                const badgeClass = {
+                    'PASS': 'badge-pass',
+                    'FAIL': 'badge-fail',
+                    'OBSERVATION': 'badge-obs'
+                }[r.status] || 'badge-skip';
+
+                const shotBtn = r.screenshot ? `<button class="btn-view-shot" onclick="viewScreenshot('${r.screenshot.replace(/\\/g, '/')}', '${r.field} - ${r.rule}')">📷 View</button>` : '-';
+
+                return `
+                <tr>
+                    <td style="color:var(--text-muted); font-size:11px;">${i + 1}</td>
+                    <td><span class="badge ${badgeClass}">${r.status}</span></td>
+                    <td><strong>${r.field}</strong> ${r.step_number ? `<span style="background:#e0e7ff; color:#3730a3; font-size:10px; font-weight:700; padding:1px 5px; border-radius:4px; margin-left:3px;">S${r.step_number}</span>` : ''}<br><span style="font-size:11px; color:var(--text-muted);">${r.semantic_type || ''}</span></td>
+                    <td><code style="word-break:break-all;">${r.rule}</code></td>
+                    <td><code style="word-break:break-all; max-width:125px; display:inline-block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHtml(r.input)}">${escapeHtml(r.input) !== '' ? escapeHtml(r.input) : '<em style="color:#94a3b8;">(empty)</em>'}</code></td>
+                    <td style="font-size:12px; line-height:1.4;">${escapeHtml(r.actual || r.validation_message || '')}</td>
+                    <td style="text-align:center;">${shotBtn}</td>
+                </tr>
+                `;
+            }).join('');
+        }
+
+        function viewScreenshot(path, title) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-img').src = '/' + path.replace(/^(\.\/)?/, '');
+            document.getElementById('img-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('img-modal').style.display = 'none';
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+project:
+  name: "HMIS"
+
+application:
+  base_url: "https://hmis-beta.pitb.gov.pk/login"
+  target_url: "https://hmis-beta.pitb.gov.pk/login"
+
+login:
+  username: "${HMIS_USERNAME:-}"
+  password: "${HMIS_PASSWORD:-}"
+  hospital: "PITB Testing Hospital 2"
+  wait_seconds: 10
+  selectors:
+    hospital: "#hospitalId"
+    username: "#username"
+    password: "#password"
+    submit: "button[type='submit']"
+
+browser:
+  browser: "chromium"
+  headless: false
+  slow_mo: 50
+  timeout: 30000
+
+execution:
+  screenshot_on_failure: true
+  screenshot_on_observation: true
+  stop_on_failure: false
+  output_dir: "reports"
+  screenshots_dir: "screenshots"

@@ -1,0 +1,8 @@
+Field: username
+Semantic Type: USERNAME
+Rule: special_characters
+Input: test@user!#
+Expected: validation_triggered
+Actual: Validation triggered as expected: 'Username contains invalid special characters.'
+Validation Detail: Username contains invalid special characters.
+Status: PASS

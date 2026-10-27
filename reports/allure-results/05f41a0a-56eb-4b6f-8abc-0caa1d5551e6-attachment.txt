@@ -1,0 +1,8 @@
+Field: confirm_password
+Semantic Type: CONFIRM_PASSWORD
+Rule: mismatched_password
+Input: koH*KsY@B8xtl
+Expected: validation_triggered
+Actual: Validation triggered as expected: 'Passwords do not match.'
+Validation Detail: Passwords do not match.
+Status: PASS

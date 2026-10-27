@@ -1,0 +1,8 @@
+Field: age
+Semantic Type: NUMBER
+Rule: above_max_boundary
+Input: 100
+Expected: validation_triggered
+Actual: Validation triggered as expected: 'Value must be less than or equal to 99.'
+Validation Detail: Value must be less than or equal to 99.
+Status: PASS

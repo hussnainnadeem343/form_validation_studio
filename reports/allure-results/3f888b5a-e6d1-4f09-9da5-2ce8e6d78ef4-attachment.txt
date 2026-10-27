@@ -1,0 +1,8 @@
+Field: phone
+Semantic Type: PHONE
+Rule: disallowed_special_symbols
+Input: 1234#$@!5678
+Expected: validation_triggered
+Actual: Validation triggered as expected: 'Phone must be numeric digits only.'
+Validation Detail: Phone must be numeric digits only.
+Status: PASS
