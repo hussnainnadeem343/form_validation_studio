@@ -44,7 +44,7 @@ class FullNameRule(BaseRule):
                 field_name=field.name,
                 semantic_type=field.semantic_type,
                 rule_name="min_length_boundary",
-                input_value="Jo",
+                input_value="Te",
                 expected_behavior=ExpectedBehavior.ACCEPTED,
                 description=f"Full name meeting minimum length boundary ({min_len} chars).",
             )
@@ -74,7 +74,7 @@ class FullNameRule(BaseRule):
                 field_name=field.name,
                 semantic_type=field.semantic_type,
                 rule_name="numbers_in_name",
-                input_value="John Doe 123",
+                input_value="Test Name 123",
                 expected_behavior=exp_num,
                 description="Evaluating behavior when numbers are included in full name.",
             )
@@ -92,7 +92,7 @@ class FullNameRule(BaseRule):
                 field_name=field.name,
                 semantic_type=field.semantic_type,
                 rule_name="special_characters_in_name",
-                input_value="John '\"<>&/\\ Doe",
+                input_value="Test '\"<>&/\\ Name",
                 expected_behavior=exp_spec,
                 description="Evaluating behavior when special characters (' \" < > & / \\) are included in full name.",
             )
@@ -128,7 +128,7 @@ class FullNameRule(BaseRule):
                 field_name=field.name,
                 semantic_type=field.semantic_type,
                 rule_name="leading_trailing_spaces_name",
-                input_value="  Jane Doe  ",
+                input_value="  Test name  ",
                 expected_behavior=exp_lts,
                 description="Evaluating behavior when name has leading/trailing spaces (auto-trim vs rejection).",
             )
@@ -162,7 +162,7 @@ class FullNameRule(BaseRule):
                 field_name=field.name,
                 semantic_type=field.semantic_type,
                 rule_name="html_markup_name",
-                input_value="<b>John Doe</b>",
+                input_value="<b>Test Name</b>",
                 expected_behavior=exp_html,
                 description="Evaluating behavior when HTML markup is included in full name.",
             )
@@ -196,7 +196,7 @@ class FullNameRule(BaseRule):
         )
 
         # 12. Valid standard full name
-        valid_name = "Jane Doe"
+        valid_name = "Test Name"
         cases.append(
             TestCase(
                 field_name=field.name,
