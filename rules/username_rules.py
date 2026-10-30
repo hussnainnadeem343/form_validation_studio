@@ -119,4 +119,55 @@ class UsernameRule(BaseRule):
             )
         )
 
+        # 9. Unicode characters in username
+        if "allow_unicode_text" in u_cfg:
+            exp_uni = ExpectedBehavior.ACCEPTED if u_cfg["allow_unicode_text"] else ExpectedBehavior.VALIDATION_TRIGGERED
+        else:
+            exp_uni = ExpectedBehavior.OBSERVE
+
+        cases.append(
+            TestCase(
+                field_name=field.name,
+                semantic_type=field.semantic_type,
+                rule_name="unicode_username",
+                input_value="José_García",
+                expected_behavior=exp_uni,
+                description="Evaluating behavior when username contains Unicode/multilingual characters.",
+            )
+        )
+
+        # 10. HTML markup in username
+        if "allow_html_markup" in u_cfg:
+            exp_html = ExpectedBehavior.ACCEPTED if u_cfg["allow_html_markup"] else ExpectedBehavior.VALIDATION_TRIGGERED
+        else:
+            exp_html = ExpectedBehavior.OBSERVE
+
+        cases.append(
+            TestCase(
+                field_name=field.name,
+                semantic_type=field.semantic_type,
+                rule_name="html_markup_username",
+                input_value="<b>testuser</b>",
+                expected_behavior=exp_html,
+                description="Evaluating behavior when HTML markup is included in username.",
+            )
+        )
+
+        # 11. Null-like strings ("null", "undefined")
+        if "allow_null_strings" in u_cfg:
+            exp_null = ExpectedBehavior.ACCEPTED if u_cfg["allow_null_strings"] else ExpectedBehavior.VALIDATION_TRIGGERED
+        else:
+            exp_null = ExpectedBehavior.OBSERVE
+
+        cases.append(
+            TestCase(
+                field_name=field.name,
+                semantic_type=field.semantic_type,
+                rule_name="null_like_strings_username",
+                input_value="null",
+                expected_behavior=exp_null,
+                description="Evaluating behavior when literal string 'null' or 'undefined' is entered as username.",
+            )
+        )
+
         return cases

@@ -101,4 +101,55 @@ class EmailRule(BaseRule):
             )
         )
 
+        # 8. Unicode characters in email
+        if "allow_unicode_text" in e_cfg:
+            exp_uni = ExpectedBehavior.ACCEPTED if e_cfg["allow_unicode_text"] else ExpectedBehavior.VALIDATION_TRIGGERED
+        else:
+            exp_uni = ExpectedBehavior.OBSERVE
+
+        cases.append(
+            TestCase(
+                field_name=field.name,
+                semantic_type=field.semantic_type,
+                rule_name="unicode_email",
+                input_value="josé@ejemplo.com",
+                expected_behavior=exp_uni,
+                description="Evaluating behavior when email contains Unicode/multilingual characters.",
+            )
+        )
+
+        # 9. HTML markup in email
+        if "allow_html_markup" in e_cfg:
+            exp_html = ExpectedBehavior.ACCEPTED if e_cfg["allow_html_markup"] else ExpectedBehavior.VALIDATION_TRIGGERED
+        else:
+            exp_html = ExpectedBehavior.OBSERVE
+
+        cases.append(
+            TestCase(
+                field_name=field.name,
+                semantic_type=field.semantic_type,
+                rule_name="html_markup_email",
+                input_value="<b>user@example.com</b>",
+                expected_behavior=exp_html,
+                description="Evaluating behavior when HTML markup is included in email address.",
+            )
+        )
+
+        # 10. Null-like strings ("null", "undefined")
+        if "allow_null_strings" in e_cfg:
+            exp_null = ExpectedBehavior.ACCEPTED if e_cfg["allow_null_strings"] else ExpectedBehavior.VALIDATION_TRIGGERED
+        else:
+            exp_null = ExpectedBehavior.OBSERVE
+
+        cases.append(
+            TestCase(
+                field_name=field.name,
+                semantic_type=field.semantic_type,
+                rule_name="null_like_strings_email",
+                input_value="null",
+                expected_behavior=exp_null,
+                description="Evaluating behavior when literal string 'null' or 'undefined' is entered as email.",
+            )
+        )
+
         return cases

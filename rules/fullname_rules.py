@@ -20,7 +20,7 @@ class FullNameRule(BaseRule):
         fn_cfg = config.get("rules", {}).get("full_name", {})
 
         min_len = int(fn_cfg.get("min_length", 2))
-        max_len = int(fn_cfg.get("max_length", 100))
+        max_len = int(fn_cfg.get("max_length", 50))
 
         # 1. Empty / Required
         cases.extend(make_required_rule(field, fn_cfg))
@@ -98,7 +98,92 @@ class FullNameRule(BaseRule):
             )
         )
 
-        # 7. Valid standard full name
+        # 7. Whitespace-only input
+        if "allow_whitespace_only" in fn_cfg:
+            exp_ws = ExpectedBehavior.ACCEPTED if fn_cfg["allow_whitespace_only"] else ExpectedBehavior.VALIDATION_TRIGGERED
+        else:
+            exp_ws = ExpectedBehavior.OBSERVE
+
+        cases.append(
+            TestCase(
+                field_name=field.name,
+                semantic_type=field.semantic_type,
+                rule_name="whitespace_only_name",
+                input_value="   ",
+                expected_behavior=exp_ws,
+                description="Evaluating behavior when name contains only whitespace.",
+            )
+        )
+
+        # 8. Leading/trailing spaces
+        if "allow_leading_trailing_spaces" in fn_cfg:
+            exp_lts = ExpectedBehavior.ACCEPTED if fn_cfg["allow_leading_trailing_spaces"] else ExpectedBehavior.VALIDATION_TRIGGERED
+        else:
+            exp_lts = ExpectedBehavior.OBSERVE
+
+        cases.append(
+            TestCase(
+                field_name=field.name,
+                semantic_type=field.semantic_type,
+                rule_name="leading_trailing_spaces_name",
+                input_value="  Jane Doe  ",
+                expected_behavior=exp_lts,
+                description="Evaluating behavior when name has leading/trailing spaces.",
+            )
+        )
+
+        # 9. Unicode and multilingual text
+        if "allow_unicode_text" in fn_cfg:
+            exp_uni = ExpectedBehavior.ACCEPTED if fn_cfg["allow_unicode_text"] else ExpectedBehavior.VALIDATION_TRIGGERED
+        else:
+            exp_uni = ExpectedBehavior.OBSERVE
+
+        cases.append(
+            TestCase(
+                field_name=field.name,
+                semantic_type=field.semantic_type,
+                rule_name="unicode_name",
+                input_value="José García 田中太郎",
+                expected_behavior=exp_uni,
+                description="Evaluating behavior when name contains Unicode/multilingual characters.",
+            )
+        )
+
+        # 10. HTML markup in name
+        if "allow_html_markup" in fn_cfg:
+            exp_html = ExpectedBehavior.ACCEPTED if fn_cfg["allow_html_markup"] else ExpectedBehavior.VALIDATION_TRIGGERED
+        else:
+            exp_html = ExpectedBehavior.OBSERVE
+
+        cases.append(
+            TestCase(
+                field_name=field.name,
+                semantic_type=field.semantic_type,
+                rule_name="html_markup_name",
+                input_value="<b>John Doe</b>",
+                expected_behavior=exp_html,
+                description="Evaluating behavior when HTML markup is included in full name.",
+            )
+        )
+
+        # 11. Null-like strings ("null", "undefined")
+        if "allow_null_strings" in fn_cfg:
+            exp_null = ExpectedBehavior.ACCEPTED if fn_cfg["allow_null_strings"] else ExpectedBehavior.VALIDATION_TRIGGERED
+        else:
+            exp_null = ExpectedBehavior.OBSERVE
+
+        cases.append(
+            TestCase(
+                field_name=field.name,
+                semantic_type=field.semantic_type,
+                rule_name="null_like_strings_name",
+                input_value="null",
+                expected_behavior=exp_null,
+                description="Evaluating behavior when literal string 'null' or 'undefined' is entered as name.",
+            )
+        )
+
+        # 12. Valid standard full name
         valid_name = "Jane Doe"
         cases.append(
             TestCase(
