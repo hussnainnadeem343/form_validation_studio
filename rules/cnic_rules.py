@@ -80,4 +80,86 @@ class CNICRule(BaseRule):
             )
         )
 
+        # 6. Special characters in CNIC (' " < > & / \)
+        cases.append(
+            TestCase(
+                field_name=field.name,
+                semantic_type=field.semantic_type,
+                rule_name="special_characters_cnic",
+                input_value="'\"<>&/\\",
+                expected_behavior=ExpectedBehavior.VALIDATION_TRIGGERED,
+                description="Special characters (' \" < > & / \\) in CNIC should trigger validation.",
+            )
+        )
+
+        # 7. Whitespace-only in CNIC
+        cases.append(
+            TestCase(
+                field_name=field.name,
+                semantic_type=field.semantic_type,
+                rule_name="whitespace_only_cnic",
+                input_value="   ",
+                expected_behavior=ExpectedBehavior.VALIDATION_TRIGGERED,
+                description="Whitespace-only input in CNIC should trigger validation.",
+            )
+        )
+
+        # 8. Leading and trailing spaces around valid CNIC
+        cases.append(
+            TestCase(
+                field_name=field.name,
+                semantic_type=field.semantic_type,
+                rule_name="leading_trailing_spaces_cnic",
+                input_value=f"  {valid_cnic_dashed}  ",
+                expected_behavior=ExpectedBehavior.OBSERVE,
+                description="Evaluating behavior when valid CNIC has leading/trailing spaces (auto-trim vs rejection).",
+            )
+        )
+
+        # 9. Unicode / Multilingual / Urdu text in CNIC
+        cases.append(
+            TestCase(
+                field_name=field.name,
+                semantic_type=field.semantic_type,
+                rule_name="unicode_cnic",
+                input_value="۳۵۲۰۲-۱۲۳۴۵۶۷-۱",
+                expected_behavior=ExpectedBehavior.VALIDATION_TRIGGERED,
+                description="Non-standard/Eastern Arabic numerals or Urdu text in CNIC should trigger validation.",
+            )
+        )
+
+        # 10. HTML markup in CNIC
+        cases.append(
+            TestCase(
+                field_name=field.name,
+                semantic_type=field.semantic_type,
+                rule_name="html_markup_cnic",
+                input_value="<b>3520212345671</b>",
+                expected_behavior=ExpectedBehavior.OBSERVE,
+                description="Evaluating behavior when HTML markup is entered into CNIC field.",
+            )
+        )
+
+        # 11. Null-like literal strings ("null", "undefined")
+        cases.append(
+            TestCase(
+                field_name=field.name,
+                semantic_type=field.semantic_type,
+                rule_name="null_like_strings_cnic",
+                input_value="null",
+                expected_behavior=ExpectedBehavior.VALIDATION_TRIGGERED,
+                description="Literal string 'null' in CNIC field should trigger validation.",
+            )
+        )
+        cases.append(
+            TestCase(
+                field_name=field.name,
+                semantic_type=field.semantic_type,
+                rule_name="undefined_like_strings_cnic",
+                input_value="undefined",
+                expected_behavior=ExpectedBehavior.VALIDATION_TRIGGERED,
+                description="Literal string 'undefined' in CNIC field should trigger validation.",
+            )
+        )
+
         return cases

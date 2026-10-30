@@ -20,7 +20,7 @@ class FullNameRule(BaseRule):
         fn_cfg = config.get("rules", {}).get("full_name", {})
 
         min_len = int(fn_cfg.get("min_length", 2))
-        max_len = int(fn_cfg.get("max_length", 50))
+        max_len = int(fn_cfg.get("max_length", 100))
 
         # 1. Empty / Required
         cases.extend(make_required_rule(field, fn_cfg))
@@ -80,7 +80,7 @@ class FullNameRule(BaseRule):
             )
         )
 
-        # 6. Special characters in full name
+        # 6. Special characters in full name (' " < > & / \)
         # If not explicitly configured, mark as OBSERVE rather than FAIL
         if "allow_special_chars" in fn_cfg:
             exp_spec = ExpectedBehavior.ACCEPTED if fn_cfg["allow_special_chars"] else ExpectedBehavior.VALIDATION_TRIGGERED
@@ -92,15 +92,17 @@ class FullNameRule(BaseRule):
                 field_name=field.name,
                 semantic_type=field.semantic_type,
                 rule_name="special_characters_in_name",
-                input_value="John <Doe> #1!",
+                input_value="John '\"<>&/\\ Doe",
                 expected_behavior=exp_spec,
-                description="Evaluating behavior when special characters are included in full name.",
+                description="Evaluating behavior when special characters (' \" < > & / \\) are included in full name.",
             )
         )
 
-        # 7. Whitespace-only input
+        # 7. Whitespace-only input (must be rejected if field is required)
         if "allow_whitespace_only" in fn_cfg:
             exp_ws = ExpectedBehavior.ACCEPTED if fn_cfg["allow_whitespace_only"] else ExpectedBehavior.VALIDATION_TRIGGERED
+        elif field.required:
+            exp_ws = ExpectedBehavior.VALIDATION_TRIGGERED
         else:
             exp_ws = ExpectedBehavior.OBSERVE
 
@@ -111,7 +113,7 @@ class FullNameRule(BaseRule):
                 rule_name="whitespace_only_name",
                 input_value="   ",
                 expected_behavior=exp_ws,
-                description="Evaluating behavior when name contains only whitespace.",
+                description="Whitespace-only input should be rejected when full name is required.",
             )
         )
 
@@ -128,11 +130,11 @@ class FullNameRule(BaseRule):
                 rule_name="leading_trailing_spaces_name",
                 input_value="  Jane Doe  ",
                 expected_behavior=exp_lts,
-                description="Evaluating behavior when name has leading/trailing spaces.",
+                description="Evaluating behavior when name has leading/trailing spaces (auto-trim vs rejection).",
             )
         )
 
-        # 9. Unicode and multilingual text
+        # 9. Unicode and multilingual text (including Urdu)
         if "allow_unicode_text" in fn_cfg:
             exp_uni = ExpectedBehavior.ACCEPTED if fn_cfg["allow_unicode_text"] else ExpectedBehavior.VALIDATION_TRIGGERED
         else:
@@ -143,9 +145,9 @@ class FullNameRule(BaseRule):
                 field_name=field.name,
                 semantic_type=field.semantic_type,
                 rule_name="unicode_name",
-                input_value="José García 田中太郎",
+                input_value="José García احمد",
                 expected_behavior=exp_uni,
-                description="Evaluating behavior when name contains Unicode/multilingual characters.",
+                description="Evaluating behavior when name contains Unicode/multilingual/Urdu characters.",
             )
         )
 
@@ -166,7 +168,7 @@ class FullNameRule(BaseRule):
             )
         )
 
-        # 11. Null-like strings ("null", "undefined")
+        # 11. Null-like literal strings ("null", "undefined")
         if "allow_null_strings" in fn_cfg:
             exp_null = ExpectedBehavior.ACCEPTED if fn_cfg["allow_null_strings"] else ExpectedBehavior.VALIDATION_TRIGGERED
         else:
@@ -179,7 +181,17 @@ class FullNameRule(BaseRule):
                 rule_name="null_like_strings_name",
                 input_value="null",
                 expected_behavior=exp_null,
-                description="Evaluating behavior when literal string 'null' or 'undefined' is entered as name.",
+                description="Evaluating behavior when literal string 'null' is entered as name.",
+            )
+        )
+        cases.append(
+            TestCase(
+                field_name=field.name,
+                semantic_type=field.semantic_type,
+                rule_name="undefined_like_strings_name",
+                input_value="undefined",
+                expected_behavior=exp_null,
+                description="Evaluating behavior when literal string 'undefined' is entered as name.",
             )
         )
 

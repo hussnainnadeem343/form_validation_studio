@@ -101,7 +101,43 @@ class EmailRule(BaseRule):
             )
         )
 
-        # 8. Unicode characters in email
+        # 8. Whitespace-only in email
+        cases.append(
+            TestCase(
+                field_name=field.name,
+                semantic_type=field.semantic_type,
+                rule_name="whitespace_only_email",
+                input_value="   ",
+                expected_behavior=ExpectedBehavior.VALIDATION_TRIGGERED,
+                description="Whitespace-only input in email field should trigger validation.",
+            )
+        )
+
+        # 9. Leading and trailing spaces around valid email
+        cases.append(
+            TestCase(
+                field_name=field.name,
+                semantic_type=field.semantic_type,
+                rule_name="leading_trailing_spaces_email",
+                input_value=f"  {valid_email}  ",
+                expected_behavior=ExpectedBehavior.OBSERVE,
+                description="Evaluating behavior when email has leading/trailing spaces (auto-trim vs rejection).",
+            )
+        )
+
+        # 10. Special escaping characters in email (' " < > & / \)
+        cases.append(
+            TestCase(
+                field_name=field.name,
+                semantic_type=field.semantic_type,
+                rule_name="special_characters_email",
+                input_value="user'\"<>&/\\@example.com",
+                expected_behavior=ExpectedBehavior.VALIDATION_TRIGGERED,
+                description="Special escaping characters (' \" < > & / \\) in email should trigger validation.",
+            )
+        )
+
+        # 11. Unicode characters in email
         if "allow_unicode_text" in e_cfg:
             exp_uni = ExpectedBehavior.ACCEPTED if e_cfg["allow_unicode_text"] else ExpectedBehavior.VALIDATION_TRIGGERED
         else:
@@ -118,7 +154,7 @@ class EmailRule(BaseRule):
             )
         )
 
-        # 9. HTML markup in email
+        # 12. HTML markup in email
         if "allow_html_markup" in e_cfg:
             exp_html = ExpectedBehavior.ACCEPTED if e_cfg["allow_html_markup"] else ExpectedBehavior.VALIDATION_TRIGGERED
         else:
@@ -135,7 +171,7 @@ class EmailRule(BaseRule):
             )
         )
 
-        # 10. Null-like strings ("null", "undefined")
+        # 13. Null-like strings ("null", "undefined")
         if "allow_null_strings" in e_cfg:
             exp_null = ExpectedBehavior.ACCEPTED if e_cfg["allow_null_strings"] else ExpectedBehavior.VALIDATION_TRIGGERED
         else:
@@ -147,8 +183,28 @@ class EmailRule(BaseRule):
                 semantic_type=field.semantic_type,
                 rule_name="null_like_strings_email",
                 input_value="null",
+                expected_behavior=ExpectedBehavior.VALIDATION_TRIGGERED,
+                description="Literal string 'null' as entire email fails email formatting.",
+            )
+        )
+        cases.append(
+            TestCase(
+                field_name=field.name,
+                semantic_type=field.semantic_type,
+                rule_name="null_account_email",
+                input_value="null@example.com",
                 expected_behavior=exp_null,
-                description="Evaluating behavior when literal string 'null' or 'undefined' is entered as email.",
+                description="Evaluating behavior when literal 'null' is used as email account username.",
+            )
+        )
+        cases.append(
+            TestCase(
+                field_name=field.name,
+                semantic_type=field.semantic_type,
+                rule_name="undefined_account_email",
+                input_value="undefined@example.com",
+                expected_behavior=exp_null,
+                description="Evaluating behavior when literal 'undefined' is used as email account username.",
             )
         )
 

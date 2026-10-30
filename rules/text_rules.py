@@ -54,9 +54,11 @@ class TextRule(BaseRule):
             )
         )
 
-        # 4. Whitespace-only input
+        # 4. Whitespace-only input (must be rejected if field is required)
         if "allow_whitespace_only" in t_cfg:
             exp_ws = ExpectedBehavior.ACCEPTED if t_cfg["allow_whitespace_only"] else ExpectedBehavior.VALIDATION_TRIGGERED
+        elif field.required:
+            exp_ws = ExpectedBehavior.VALIDATION_TRIGGERED
         else:
             exp_ws = ExpectedBehavior.OBSERVE
 
@@ -67,7 +69,7 @@ class TextRule(BaseRule):
                 rule_name="whitespace_only_text",
                 input_value="   ",
                 expected_behavior=exp_ws,
-                description="Evaluating behavior when text contains only whitespace.",
+                description="Whitespace-only input should be rejected when text field is required.",
             )
         )
 
@@ -84,11 +86,11 @@ class TextRule(BaseRule):
                 rule_name="leading_trailing_spaces_text",
                 input_value="  Standard Text Input  ",
                 expected_behavior=exp_lts,
-                description="Evaluating behavior when text has leading/trailing spaces.",
+                description="Evaluating behavior when text has leading/trailing spaces (auto-trim vs rejection).",
             )
         )
 
-        # 6. Unicode and multilingual text
+        # 6. Unicode and multilingual text (including Urdu)
         if "allow_unicode_text" in t_cfg:
             exp_uni = ExpectedBehavior.ACCEPTED if t_cfg["allow_unicode_text"] else ExpectedBehavior.VALIDATION_TRIGGERED
         else:
@@ -99,13 +101,13 @@ class TextRule(BaseRule):
                 field_name=field.name,
                 semantic_type=field.semantic_type,
                 rule_name="unicode_text",
-                input_value="Test avec accents é à ü 测试 اختبار",
+                input_value="Test avec accents é à ü 测试 اردو اختبار",
                 expected_behavior=exp_uni,
-                description="Evaluating behavior when text contains Unicode/multilingual characters.",
+                description="Evaluating behavior when text contains Unicode/multilingual/Urdu characters.",
             )
         )
 
-        # 7. Line breaks in text
+        # 7. Line breaks in text (especially relevant for textareas and descriptions)
         if "allow_line_breaks" in t_cfg:
             exp_lb = ExpectedBehavior.ACCEPTED if t_cfg["allow_line_breaks"] else ExpectedBehavior.VALIDATION_TRIGGERED
         else:
@@ -139,7 +141,7 @@ class TextRule(BaseRule):
             )
         )
 
-        # 9. Null-like strings ("null", "undefined")
+        # 9. Null-like literal strings ("null", "undefined")
         if "allow_null_strings" in t_cfg:
             exp_null = ExpectedBehavior.ACCEPTED if t_cfg["allow_null_strings"] else ExpectedBehavior.VALIDATION_TRIGGERED
         else:
@@ -152,7 +154,17 @@ class TextRule(BaseRule):
                 rule_name="null_like_strings_text",
                 input_value="null",
                 expected_behavior=exp_null,
-                description="Evaluating behavior when literal string 'null' or 'undefined' is entered as text.",
+                description="Evaluating behavior when literal string 'null' is entered as text.",
+            )
+        )
+        cases.append(
+            TestCase(
+                field_name=field.name,
+                semantic_type=field.semantic_type,
+                rule_name="undefined_like_strings_text",
+                input_value="undefined",
+                expected_behavior=exp_null,
+                description="Evaluating behavior when literal string 'undefined' is entered as text.",
             )
         )
 
